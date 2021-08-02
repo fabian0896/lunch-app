@@ -1,9 +1,15 @@
 import db from 'lunch-db';
 import { app, ipcMain } from 'electron';
+import path from 'path';
 
-async function setupDatabase() {
-  ipcMain.handle('message', async (event) => {
-    return 'Hola desde el main process';
+function setupDatabase() {
+  ipcMain.on('getDbPath', (event) => {
+    const databasePath = app.getPath('appData');
+    event.returnValue = path.join(
+      databasePath,
+      app.getName(),
+      'databse.sqlite'
+    );
   });
 }
 
