@@ -1,15 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Header, Icon } from 'semantic-ui-react';
+import { Button, Header, Icon, Divider } from 'semantic-ui-react';
 import { database } from '../../services/database';
-import { CompanyModal } from '../../components';
+import { CompanyModal, CompanyList, ConfirmModal } from '../../components';
 
 const Companies = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [companies, setCompanies] = useState([]);
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const [selectedCompany, setSelectedCompany] = useState({});
 
   const getCompanies = async () => {
     const { Company } = database();
     const results = await Company.getList(true);
-    console.log(results);
+    setCompanies(results);
+  };
+
+  const handleDelete = async (companyId) => {
+    const { Company } = database();
+    await Company.destroy(companyId);
+    await getCompanies();
+  };
+
+  const handleUpdate = async (companyId, values) => {
+    const { Company } = database();
+    await Company.update(companyId, values);
+    await getCompanies();
   };
 
   const addCompany = async (values) => {
@@ -31,12 +46,36 @@ const Companies = () => {
     handleCloseModal();
   };
 
+  const handleOpenConfirm = (companyId) => {
+    const company = companies.find((c) => c.id === companyId);
+    setSelectedCompany(company);
+    setOpenConfirmModal(true);
+  };
+
+  const handleConfirmModal = async () => {
+    if (!selectedCompany.id) return;
+    await handleDelete(selectedCompany.id);
+    setSelectedCompany({});
+    setOpenConfirmModal(false);
+  };
+
+  const handleCloseConfirm = () => {
+    setOpenConfirmModal(false);
+  };
+
   useEffect(() => {
     getCompanies();
   }, []);
 
   return (
     <div>
+      <ConfirmModal
+        title="Eliminar Empresa"
+        message={`Esta seguro que desea eliminar la empresa ${selectedCompany.name}?`}
+        onClose={handleCloseConfirm}
+        onConfirm={handleConfirmModal}
+        open={openConfirmModal}
+      />
       <CompanyModal
         onClose={handleCloseModal}
         onOpen={handleOpenModal}
@@ -55,6 +94,15 @@ const Companies = () => {
           <Icon name="add" />
         </Button.Content>
       </Button>
+      <Divider />
+      {companies.map((company) => (
+        <CompanyList
+          onUpdate={handleUpdate}
+          onDelet={handleOpenConfirm}
+          key={company.id}
+          company={company}
+        />
+      ))}
     </div>
   );
 };

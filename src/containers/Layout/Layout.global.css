@@ -10,6 +10,8 @@
 
 .Layout-content{
   padding: 30px !important;
+  height: 100vh;
+  overflow: auto;
 }
 
 
