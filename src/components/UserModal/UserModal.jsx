@@ -3,14 +3,16 @@ import { Modal, Form, Button, Image } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 // eslint-disable-next-line import/no-unresolved
 import RfidCard from '../RfidCard';
-import addUserSvg from '../../../assets/svg/add_user.svg';
+import addUserSvg from '../../../assets/svg/profile_pic.svg';
 
-const UserModal = ({ companyOptions }) => {
+const UserModal = ({ companyOptions, open, onClose, onOpen }) => {
   return (
     <Modal
       closeIcon
       dimmer="blurring"
-      trigger={<Button>Modal</Button>}
+      open={open}
+      onClose={onClose}
+      onOpen={onOpen}
       size="mini"
     >
       <Modal.Header>Agregar Usuario</Modal.Header>
@@ -18,12 +20,14 @@ const UserModal = ({ companyOptions }) => {
         <Image centered size="small" wrapped src={addUserSvg} />
         <Form>
           <Form.Input name="name" id="name" label="Nombre" />
-          <Form.Input
-            type="number"
-            name="identification"
-            id="identification"
-            label="Cedula"
-          />
+          {false && (
+            <Form.Input
+              type="number"
+              name="identification"
+              id="identification"
+              label="Cedula"
+            />
+          )}
           <Form.Dropdown
             // eslint-disable-next-line prettier/prettier
             style={{color: '#000000'}}
@@ -46,6 +50,9 @@ const UserModal = ({ companyOptions }) => {
 
 UserModal.propTypes = {
   companyOptions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onOpen: PropTypes.func.isRequired,
 };
 
 export default UserModal;

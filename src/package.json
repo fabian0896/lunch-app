@@ -15,6 +15,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "lunch-db": "github:fabian0896/lunch-db"
+    "lunch-db": "github:fabian0896/lunch-db",
+    "rfid": "github:fabian0896/serial-rfid"
   }
 }

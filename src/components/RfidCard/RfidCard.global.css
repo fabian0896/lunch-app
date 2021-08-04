@@ -10,8 +10,20 @@
   align-items: center;
   overflow: hidden;
   position: relative;
+}
+
+.RfidCard.reading{
   border: 2px solid #2185D0;
 }
+.RfidCard.success{
+  border: 2px solid #16ab39;
+  background: rgba(22, 171, 57, .3);
+}
+.RfidCard.error{
+  border: 2px solid #db2828;
+  background: rgba(219, 40, 40,.3);
+}
+
 
 .Rfid-circle{
   position: absolute;

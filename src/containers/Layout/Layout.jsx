@@ -1,14 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Header } from 'semantic-ui-react';
 import Item from './Item';
 
+import { RfidModal } from '../../components';
+
 import './Layout.global.css';
 
 const Layout = ({ children }) => {
+  const [openRfidModal, setOpenRfidModal] = useState(false);
+  const handleOpenRfidModal = () => {
+    setOpenRfidModal(true);
+  };
+  const handleCloseRfidModal = () => {
+    setOpenRfidModal(false);
+  };
   return (
     <Grid className="Layout-grid">
       <Grid.Column className="Layout-menu-container" width={4}>
+        <RfidModal
+          open={openRfidModal}
+          onOpen={handleOpenRfidModal}
+          onClose={handleCloseRfidModal}
+        />
         <div className="Layout-navigation">
           <ul>
             <Item title="Inicio" to="/" icon="home" />
@@ -20,6 +34,7 @@ const Layout = ({ children }) => {
           <div className="Layout-submenu">
             <div className="Layout-rfid-status">
               <Header
+                onClick={handleOpenRfidModal}
                 className="Layout-rfid-status-header"
                 content="Conección RFID"
                 subheader="Estado: conectado"

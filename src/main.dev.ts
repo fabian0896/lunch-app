@@ -17,6 +17,7 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 
 import setupDatabase from './main/database';
+import setupRfid from './main/rfid';
 
 export default class AppUpdater {
   constructor() {
@@ -134,3 +135,4 @@ app.on('activate', () => {
 });
 
 setupDatabase();
+setupRfid();

@@ -16,7 +16,7 @@
 
 
 .Layout-navigation{
-  padding: 40px 0px;
+  padding: 25px 0px;
   width: 100%;
   background: #151515;
   height: 100vh;
@@ -118,7 +118,7 @@
     box-shadow: 0px 0px 5px grey;
   }
 
-  .Layout-rfid-status-dot.desconnected{
+  .Layout-rfid-status-dot.disconnected{
     background: #db2828;
     box-shadow: 0px 0px 7px #db2828;
   }

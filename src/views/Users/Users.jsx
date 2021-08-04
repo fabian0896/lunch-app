@@ -6,6 +6,7 @@ import { database } from '../../services/database';
 
 const Users = () => {
   const [companyList, setCompanyList] = useState([]);
+  const [openUserModal, setOpenUserModal] = useState(false);
 
   const getCompaniesList = async () => {
     const { Company } = database();
@@ -15,8 +16,15 @@ const Users = () => {
       value: c.id,
       text: c.name,
     }));
-    console.log(formatList);
     setCompanyList(formatList);
+  };
+
+  const handleCloseUserModal = () => {
+    setOpenUserModal(false);
+  };
+
+  const handleOpenUserModal = () => {
+    setOpenUserModal(true);
   };
 
   useEffect(() => {
@@ -25,14 +33,19 @@ const Users = () => {
 
   return (
     <div>
-      <UserModal companyOptions={companyList} />
+      <UserModal
+        open={openUserModal}
+        onClose={handleCloseUserModal}
+        onOpen={handleOpenUserModal}
+        companyOptions={companyList}
+      />
       <Header
         icon="address book"
         size="huge"
         content="Usuarios"
         subheader="Usuarios registrados en el sistema"
       />
-      <Button onClick={() => {}} animated="vertical" primary>
+      <Button onClick={handleOpenUserModal} animated="vertical" primary>
         <Button.Content visible>Agregar Usuario</Button.Content>
         <Button.Content hidden>
           <Icon name="add" />
