@@ -9,7 +9,6 @@ const RfidModal = ({ open, onOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
 
   const getPorts = async () => {
-    console.time('get-ports');
     setLoading(true);
     const result = await ipcRenderer.invoke('getRfidPorts');
     const ports = result.map((p) => ({
@@ -20,7 +19,6 @@ const RfidModal = ({ open, onOpen, onClose }) => {
     }));
     setPortOptions(ports);
     setLoading(false);
-    console.timeEnd('get-ports');
   };
 
   useEffect(() => {
