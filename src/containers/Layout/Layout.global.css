@@ -20,7 +20,9 @@
   width: 100%;
   background: #151515;
   height: 100vh;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .Layout-navigation ul {
@@ -42,7 +44,7 @@
   margin-bottom: 10px;
 }
 
-.item{
+.Item-item{
   color: white !important;
   margin: 0 !important;
 }
@@ -52,7 +54,7 @@
   border-radius: 10px 0px 0px 10px;
 }
 
-.active li .item{
+.active li .Item-item{
   color: #151515 !important;
 }
 
@@ -93,3 +95,35 @@
     border-top-right-radius: 10px;
   }
 
+
+  .Layout-submenu{
+    padding: 0 20px;
+  }
+
+  .Layout-rfid-status{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .Layout-rfid-status-header{
+    flex: 1;
+  }
+
+  .Layout-rfid-status-dot{
+    width: 8px;
+    height: 8px;
+    background: grey;
+    border-radius: 50%;
+    box-shadow: 0px 0px 5px grey;
+  }
+
+  .Layout-rfid-status-dot.desconnected{
+    background: #db2828;
+    box-shadow: 0px 0px 7px #db2828;
+  }
+
+  .Layout-rfid-status-dot.connected{
+    background: #16ab39;
+    box-shadow: 0px 0px 7px #16ab39;
+  }

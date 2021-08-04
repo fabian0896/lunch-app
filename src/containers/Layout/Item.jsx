@@ -10,7 +10,7 @@ const Item = ({ icon, title, to }) => {
         <b />
         <b />
         <Header
-          className="item"
+          className="Item-item"
           size="small"
           as="h2"
           icon={icon}

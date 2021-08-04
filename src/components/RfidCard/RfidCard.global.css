@@ -1,0 +1,73 @@
+.RfidCard{
+  width: 100%;
+  height: 150px;
+  background-color: rgb(210, 210, 210);
+  border-radius: 15px;
+  margin: 15px 0;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, .2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  border: 2px solid #2185D0;
+}
+
+.Rfid-circle{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #2185D0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Rfid-circle > i{
+  margin: 0;
+}
+
+.Rfid-circle::before{
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: black;
+  opacity: .2;
+  animation: ease-in-out .9s reading infinite;
+  animation-delay: .9s;
+}
+.Rfid-circle::after{
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #2185D0;
+  opacity: .2;
+  animation: ease-in-out 1.8s reading infinite;
+}
+
+@keyframes reading {
+    0%{
+      width: 50px;
+      height: 50px;
+      opacity: .3;
+    }
+    100%{
+      width: 200px;
+      height: 200px;
+      opacity: .0;
+    }
+}

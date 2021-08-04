@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Header } from 'semantic-ui-react';
 import Item from './Item';
 
 import './Layout.global.css';
@@ -17,6 +17,19 @@ const Layout = ({ children }) => {
             <Item title="Usuarios" to="/users" icon="address book" />
             <Item title="Empresas" to="/companies" icon="building" />
           </ul>
+          <div className="Layout-submenu">
+            <div className="Layout-rfid-status">
+              <Header
+                className="Layout-rfid-status-header"
+                content="Conección RFID"
+                subheader="Estado: conectado"
+                icon="connectdevelop"
+                color="grey"
+                inverted
+              />
+              <div className="Layout-rfid-status-dot connected" />
+            </div>
+          </div>
         </div>
       </Grid.Column>
       <Grid.Column className="Layout-content" width={12}>

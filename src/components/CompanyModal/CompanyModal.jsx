@@ -22,42 +22,42 @@ const CompanyModal = ({ open, onClose, onOpen, onSubmit }) => {
   };
 
   return (
-    <Modal onOpen={onOpen} onClose={onClose} open={open} size="small">
+    <Modal
+      closeIcon
+      dimmer="blurring"
+      onOpen={onOpen}
+      onClose={onClose}
+      open={open}
+      size="mini"
+    >
       <Modal.Header>Agrega una empresa</Modal.Header>
-      <Modal.Content image>
-        <Image size="medium" wrapped src={SvgImage} />
-        <Modal.Description>
-          <Header>Datos</Header>
-          <p>Introduce el nombre de una nueva empresa</p>
-          <Form onSubmit={formik.handleSubmit}>
-            <Form.Input
-              value={formik.values.name}
-              onChange={formik.handleChange}
-              id="name"
-              name="name"
-              label="Nombre"
-              placeholder="nombre"
-              action={
-                <Button
-                  labelPosition="right"
-                  type="submit"
-                  positive
-                  icon="checkmark"
-                  content="Agregar"
-                />
-              }
-            />
-          </Form>
-        </Modal.Description>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button
-          onClick={handleClose}
-          content="cancelar"
-          icon="times"
-          labelPosition="right"
+      <Modal.Content>
+        <Image
+          style={{ marginBottom: '15px' }}
+          size="small"
+          centered
+          wrapped
+          src={SvgImage}
         />
-      </Modal.Actions>
+        <Form onSubmit={formik.handleSubmit}>
+          <Form.Input
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            id="name"
+            name="name"
+            label="Nombre"
+            placeholder="nombre"
+          />
+          <Button
+            fluid
+            labelPosition="right"
+            type="submit"
+            positive
+            icon="checkmark"
+            content="Agregar"
+          />
+        </Form>
+      </Modal.Content>
     </Modal>
   );
 };
