@@ -11,11 +11,14 @@
   },
   "scripts": {
     "electron-rebuild": "node -r ../.erb/scripts/BabelRegister.js ../.erb/scripts/ElectronRebuild.js",
-    "postinstall": "yarn electron-rebuild"
+    "postinstall": "yarn electron-rebuild",
+    "rebuild-sqlite": "electron-rebuild -f -w sqlite3"
   },
   "license": "MIT",
   "dependencies": {
-    "lunch-db": "github:fabian0896/lunch-db",
-    "rfid": "github:fabian0896/serial-rfid"
+    "lunch-db": "https://github.com/fabian0896/lunch-db.git",
+    "rfid": "https://github.com/fabian0896/serial-rfid.git",
+    "serialport": "^9.2.0",
+    "sqlite3": "^5.0.2"
   }
 }

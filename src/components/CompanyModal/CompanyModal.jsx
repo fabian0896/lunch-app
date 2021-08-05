@@ -3,7 +3,7 @@ import { Modal, Image, Header, Button, Form } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
 
-import SvgImage from '../../../assets/svg/add_tasks.svg';
+import addTaskSvg from '../../../assets/svg/add_tasks.svg';
 
 const CompanyModal = ({ open, onClose, onOpen, onSubmit }) => {
   const formik = useFormik({
@@ -26,7 +26,7 @@ const CompanyModal = ({ open, onClose, onOpen, onSubmit }) => {
       closeIcon
       dimmer="blurring"
       onOpen={onOpen}
-      onClose={onClose}
+      onClose={handleClose}
       open={open}
       size="mini"
     >
@@ -37,7 +37,7 @@ const CompanyModal = ({ open, onClose, onOpen, onSubmit }) => {
           size="small"
           centered
           wrapped
-          src={SvgImage}
+          src={addTaskSvg}
         />
         <Form onSubmit={formik.handleSubmit}>
           <Form.Input
