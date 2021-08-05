@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Form, Button, Image } from 'semantic-ui-react';
+import { Modal, Form, Image } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 // eslint-disable-next-line import/no-unresolved
 import RfidCard from '../RfidCard';

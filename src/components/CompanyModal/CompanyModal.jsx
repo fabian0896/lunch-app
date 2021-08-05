@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Image, Header, Button, Form } from 'semantic-ui-react';
+import { Modal, Image, Button, Form } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
 
