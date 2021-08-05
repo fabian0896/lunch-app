@@ -2,8 +2,13 @@ import React from 'react';
 import { Modal, Image, Button, Form } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 import addTaskSvg from '../../../assets/svg/add_tasks.svg';
+
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required('El nombre es necesario'),
+});
 
 const CompanyModal = ({ open, onClose, onOpen, onSubmit }) => {
   const formik = useFormik({
@@ -14,6 +19,7 @@ const CompanyModal = ({ open, onClose, onOpen, onSubmit }) => {
       await onSubmit(values, actions);
       actions.resetForm();
     },
+    validationSchema,
   });
 
   const handleClose = () => {
@@ -43,12 +49,15 @@ const CompanyModal = ({ open, onClose, onOpen, onSubmit }) => {
           <Form.Input
             value={formik.values.name}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             id="name"
             name="name"
             label="Nombre"
             placeholder="nombre"
+            error={!!(formik.touched.name && formik.errors.name)}
           />
           <Button
+            disabled={!formik.isValid}
             fluid
             labelPosition="right"
             type="submit"

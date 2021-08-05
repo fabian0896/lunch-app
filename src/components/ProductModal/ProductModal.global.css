@@ -1,0 +1,16 @@
+.ProductModal-product-container {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+.ProductModal-product-image {
+  max-height: 200px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+}
+.ProductModal-product-close {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}

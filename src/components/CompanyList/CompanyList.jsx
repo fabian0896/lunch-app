@@ -1,6 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Header, Image, Table, Button, Input } from 'semantic-ui-react';
+import { Header, Image, Table, Button, Input, Icon } from 'semantic-ui-react';
+
+import addTaskSvg from '../../../assets/svg/empty.svg';
 
 const CompanyList = ({ company, onDelet, onUpdate }) => {
   const [edit, setEdit] = useState(false);
@@ -78,6 +80,16 @@ const CompanyList = ({ company, onDelet, onUpdate }) => {
         </Table.Row>
       </Table.Header>
       <Table.Body>
+        {false && (
+          <Table.Row>
+            <Table.Cell style={{ padding: '20px' }} colspan="2">
+              <Image centered size="small" src={addTaskSvg} />
+              <p style={{ textAlign: 'center', marginTop: '15px' }}>
+                No hay usuarios registrados a esta empresa
+              </p>
+            </Table.Cell>
+          </Table.Row>
+        )}
         <Table.Row>
           <Table.Cell>
             <Header as="h4" image>
@@ -92,7 +104,9 @@ const CompanyList = ({ company, onDelet, onUpdate }) => {
               </Header.Content>
             </Header>
           </Table.Cell>
-          <Table.Cell textAlign="right">22</Table.Cell>
+          <Table.Cell textAlign="right">
+            <Button circular icon="eye" size="mini" />
+          </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
@@ -108,7 +122,9 @@ const CompanyList = ({ company, onDelet, onUpdate }) => {
               </Header.Content>
             </Header>
           </Table.Cell>
-          <Table.Cell textAlign="right">15</Table.Cell>
+          <Table.Cell textAlign="right">
+            <Button circular icon="eye" size="mini" />
+          </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
@@ -124,7 +140,9 @@ const CompanyList = ({ company, onDelet, onUpdate }) => {
               </Header.Content>
             </Header>
           </Table.Cell>
-          <Table.Cell textAlign="right">12</Table.Cell>
+          <Table.Cell textAlign="right">
+            <Button circular icon="eye" size="mini" />
+          </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>
@@ -140,7 +158,9 @@ const CompanyList = ({ company, onDelet, onUpdate }) => {
               </Header.Content>
             </Header>
           </Table.Cell>
-          <Table.Cell textAlign="right">11</Table.Cell>
+          <Table.Cell textAlign="right">
+            <Button circular icon="eye" size="mini" />
+          </Table.Cell>
         </Table.Row>
       </Table.Body>
     </Table>

@@ -6,3 +6,4 @@ export { default as ConfirmModal } from './ConfirmModal';
 export { default as UserModal } from './UserModal';
 export { default as RfidCard } from './RfidCard';
 export { default as RfidModal } from './RfidModal';
+export { default as ProductModal } from './ProductModal';

@@ -22,7 +22,7 @@ const Card = () => {
       return (
         <div className="RfidCard success">
           <Header size="small" icon textAlign="center">
-            <Icon size="small" name="check circle" />
+            <Icon size="small" name="check" circular />
             <Header.Content>Ohhh Yeah!!</Header.Content>
             <Header.Subheader>
               Se escaneo la tarjeta correctamente

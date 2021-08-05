@@ -1,14 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Header, Button, Divider, Icon } from 'semantic-ui-react';
+
+import { ProductModal } from '../../components';
 
 const Products = () => {
+  const [openProductModal, setOpenProductModal] = useState(false);
+
+  const handleOpenProductModal = () => {
+    setOpenProductModal(true);
+  };
+
+  const handleCloseProductModal = () => {
+    setOpenProductModal(false);
+  };
+
+  const handleSubmit = async (values) => {
+    setOpenProductModal(false);
+  };
+
   return (
     <div>
-      <h1>Hola desde Products</h1>
-      <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet fuga
-        provident adipisci exercitationem delectus molestiae commodi eaque
-        libero quo repudiandae!
-      </p>
+      <ProductModal
+        onSubmit={handleSubmit}
+        onClose={handleCloseProductModal}
+        onOpen={handleOpenProductModal}
+        open={openProductModal}
+      />
+      <Header
+        icon="utensils"
+        size="huge"
+        content="Comidas"
+        subheader="Menu del restaurante!"
+      />
+      <Button onClick={handleOpenProductModal} animated="vertical" primary>
+        <Button.Content visible>Crear Nuevo Plato</Button.Content>
+        <Button.Content hidden>
+          <Icon name="add" />
+        </Button.Content>
+      </Button>
+      <Divider />
     </div>
   );
 };
