@@ -74,9 +74,9 @@
     debug "^4.3.1"
 
 "@types/node@*":
-  version "16.4.12"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.4.12.tgz#961e3091f263e6345d2d84afab4e047a60b4b11b"
-  integrity sha512-zxrTNFl9Z8boMJXs6ieqZP0wAhvkdzmHSxTlJabM16cf5G9xBc1uPRH5Bbv2omEDDiM8MzTfqTJXBf0Ba4xFWA==
+  version "16.4.13"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.4.13.tgz#7dfd9c14661edc65cccd43a29eb454174642370d"
+  integrity sha512-bLL69sKtd25w7p1nvg9pigE4gtKVpGTPojBFLMkGHXuUgap2sLqQt2qUnqmVCDfzGUL0DRNZP+1prIZJbMeAXg==
 
 abbrev@1:
   version "1.1.1"
@@ -720,7 +720,7 @@ lru-cache@^6.0.0:
 
 "lunch-db@https://github.com/fabian0896/lunch-db.git":
   version "1.0.0"
-  resolved "https://github.com/fabian0896/lunch-db.git#4bda6125691d05329db001930386f281964db4aa"
+  resolved "https://github.com/fabian0896/lunch-db.git#963e1132d6dd5d461bbee71f354ff931420b4cfe"
   dependencies:
     defaults "^1.0.3"
     sequelize "^6.6.5"

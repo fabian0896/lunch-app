@@ -6,6 +6,7 @@
 }
 .ProductModal-product-image {
   max-height: 200px;
+  max-width: 100%;
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
   border-radius: 6px;
 }

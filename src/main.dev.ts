@@ -18,6 +18,7 @@ import MenuBuilder from './menu';
 
 import setupDatabase from './main/database';
 import setupRfid from './main/rfid';
+import setupImages from './main/images';
 
 export default class AppUpdater {
   constructor() {
@@ -134,5 +135,7 @@ app.on('activate', () => {
   if (mainWindow === null) createWindow();
 });
 
+// Setup ipc events
 setupDatabase();
 setupRfid();
+setupImages();

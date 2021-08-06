@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import NumberFormat from 'react-number-format';
 import { Modal, Image, Button, Form } from 'semantic-ui-react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
+import defaults from 'defaults';
 
 import breakfastSvg from '../../../assets/svg/breakfast.svg';
 
@@ -27,13 +28,13 @@ const validationSchema = Yup.object().shape({
   image: Yup.string(),
 });
 
-const ProductModal = ({ open, onOpen, onClose, onSubmit }) => {
+const ProductModal = ({ open, onOpen, onClose, onSubmit, editValues }) => {
   const formik = useFormik({
-    initialValues: {
+    initialValues: defaults(editValues, {
       name: '',
       price: '',
       image: '',
-    },
+    }),
     onSubmit: async (values, actions) => {
       values.price = parseInt(values.price, 10);
       await onSubmit(values, actions);
@@ -51,6 +52,15 @@ const ProductModal = ({ open, onOpen, onClose, onSubmit }) => {
     formik.setFieldValue('image', file.path);
   };
 
+  useEffect(() => {
+    if (!editValues) {
+      formik.resetForm();
+      return;
+    }
+    formik.setValues(editValues);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editValues]);
+
   return (
     <Modal
       open={open}
@@ -60,7 +70,7 @@ const ProductModal = ({ open, onOpen, onClose, onSubmit }) => {
       size="mini"
       onClose={handleClose}
     >
-      <Modal.Header>Crear Plato</Modal.Header>
+      <Modal.Header>{editValues ? 'Editar' : 'Crear'} Plato</Modal.Header>
       <Modal.Content>
         {formik.values.image ? (
           <div className="ProductModal-product-container">
@@ -102,6 +112,7 @@ const ProductModal = ({ open, onOpen, onClose, onSubmit }) => {
           <Form.Field>
             {formik.values.image ? (
               <Button
+                type="button"
                 size="small"
                 icon="close"
                 labelPosition="right"
@@ -111,6 +122,7 @@ const ProductModal = ({ open, onOpen, onClose, onSubmit }) => {
               />
             ) : (
               <Button
+                type="button"
                 size="large"
                 icon="file image"
                 labelPosition="right"
@@ -132,7 +144,7 @@ const ProductModal = ({ open, onOpen, onClose, onSubmit }) => {
           </Form.Field>
 
           <Form.Button disabled={!formik.isValid} type="submit" positive fluid>
-            Crear
+            {editValues ? 'Editar' : 'Crear'}
           </Form.Button>
         </Form>
       </Modal.Content>
@@ -145,6 +157,8 @@ ProductModal.propTypes = {
   onOpen: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  editValues: PropTypes.oneOfType([PropTypes.object, PropTypes.bool])
+    .isRequired,
 };
 
 export default ProductModal;
