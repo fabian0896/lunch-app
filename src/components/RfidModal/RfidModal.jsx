@@ -13,7 +13,7 @@ const RfidModal = ({ open, onOpen, onClose }) => {
     const result = await ipcRenderer.invoke('getRfidPorts');
     const ports = result.map((p) => ({
       key: p.path,
-      text: p.manufacturer || 'No Reconocido',
+      text: p.manufacturer || 'No reconocido',
       value: p.path,
       description: p.path,
     }));

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Header, Button, Divider, Image } from 'semantic-ui-react';
 import numeral from 'numeral';
@@ -8,8 +8,10 @@ import CartItem from '../CartItem';
 import './Cart.global.css';
 
 import emptySvg from '../../../assets/svg/empty_red.svg';
+import EditModal from './EditModal';
 
 const Cart = ({ products }) => {
+  const [open, setOpen] = useState(false);
   const getTotalPrice = () => {
     const totalPrice = products.reduce(
       (sum, p) => p.details.price * p.details.quantity + sum,
@@ -24,7 +26,13 @@ const Cart = ({ products }) => {
 
   return (
     <div className="Card">
+      <EditModal
+        onClose={() => setOpen(false)}
+        product={products[0]}
+        open={open}
+      />
       <Header
+        onClick={() => setOpen((v) => !v)}
         className="Cart-header"
         size="large"
         content="Pedido"

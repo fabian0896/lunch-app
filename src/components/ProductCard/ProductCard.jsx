@@ -49,7 +49,7 @@ const ProductCard = ({ product, onDelete, onEdit, onAddCart }) => {
         onMouseLeave={handleCloseDimmer}
         onMouseEnter={() => setActive(true)}
         blurring
-        dimmed={active && onAddCart}
+        dimmed={active && !!onAddCart}
       >
         <div className="ProductCard-image-container">
           <img
@@ -60,7 +60,7 @@ const ProductCard = ({ product, onDelete, onEdit, onAddCart }) => {
             alt={product.name}
           />
         </div>
-        <Dimmer active={active && onAddCart}>
+        <Dimmer active={active && !!onAddCart}>
           {onAddCart && (
             <div>
               <Form onSubmit={formik.handleSubmit} size="small">
@@ -82,7 +82,7 @@ const ProductCard = ({ product, onDelete, onEdit, onAddCart }) => {
                     fluid
                     icon="minus"
                   />
-                  <Form.Field fluid>
+                  <Form.Field>
                     <input
                       name="quantity"
                       value={formik.values.quantity}
