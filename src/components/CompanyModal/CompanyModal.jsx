@@ -40,7 +40,7 @@ const CompanyModal = ({ open, onClose, onOpen, onSubmit }) => {
       <Modal.Content>
         <Image
           style={{ marginBottom: '15px' }}
-          size="small"
+          size="medium"
           centered
           wrapped
           src={addTaskSvg}

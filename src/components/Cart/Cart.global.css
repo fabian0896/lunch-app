@@ -1,0 +1,35 @@
+.Card {
+  background: #e2e2e2;
+  padding: 15px;
+  border-radius: 10px;
+  height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+.Cart-header {
+  margin-bottom: 35px !important;
+}
+
+.Cart-product-list {
+  flex: 1;
+}
+
+.Cart-product-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.Cart-actions {
+}
+.Cart-actions .resume {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 15px;
+}
+.Cart-actions .resume > * {
+  margin: 0;
+}
