@@ -5,10 +5,17 @@ import numeral from 'numeral';
 
 import './CartItem.global.css';
 
-const CartItem = ({ product }) => {
+const CartItem = ({ product, onClick }) => {
+  const handleClick = () => {
+    onClick(product);
+  };
   return (
     <div className="CartItem">
-      <div className="CartItem-container">
+      <button
+        onClick={handleClick}
+        type="button"
+        className="CartItem-container"
+      >
         <Header
           className="CartItem-header-container"
           content={product.name}
@@ -20,7 +27,7 @@ const CartItem = ({ product }) => {
           <Image className="CartItem-image" src={product.image} />
           <span className="CartItem-quantity">{product.details.quantity}</span>
         </div>
-      </div>
+      </button>
       <Divider />
     </div>
   );
@@ -28,6 +35,11 @@ const CartItem = ({ product }) => {
 
 CartItem.propTypes = {
   product: PropTypes.objectOf(PropTypes.any).isRequired,
+  onClick: PropTypes.func,
+};
+
+CartItem.defaultProps = {
+  onClick: () => {},
 };
 
 export default CartItem;

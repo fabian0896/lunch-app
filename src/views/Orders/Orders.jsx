@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Header } from 'semantic-ui-react';
-import { ProductCard, CartItem, Cart } from '../../components';
+import { Grid } from 'semantic-ui-react';
+import { v4 as uuidv4 } from 'uuid';
+
+import { ProductCard, Cart } from '../../components';
 import { database } from '../../services/database';
 
 const Orders = () => {
@@ -8,13 +10,20 @@ const Orders = () => {
   const [cart, setCart] = useState([]);
 
   const addToCart = (product) => {
-    console.log(product);
     let newCart = [...cart];
-    const productIndex = cart.findIndex((p) => p.id === product.id);
+    const productIndex = cart.findIndex(
+      (p) => p.id === product.id && p.details.price === product.details.price
+    );
     if (productIndex !== -1) {
       newCart[productIndex].details.quantity += product.details.quantity;
     } else {
-      newCart = [...newCart, product];
+      newCart = [
+        ...newCart,
+        {
+          ...product,
+          cartId: uuidv4(),
+        },
+      ];
     }
     setCart(newCart);
   };
@@ -33,6 +42,10 @@ const Orders = () => {
     addToCart(product);
   };
 
+  const handleChangeCart = (newProducts) => {
+    setCart(newProducts);
+  };
+
   return (
     <div>
       <Grid>
@@ -46,7 +59,7 @@ const Orders = () => {
           </Grid>
         </Grid.Column>
         <Grid.Column width={6}>
-          <Cart products={cart} />
+          <Cart onChange={handleChangeCart} products={cart} />
         </Grid.Column>
       </Grid>
     </div>

@@ -7,11 +7,13 @@ import CartItem from '../CartItem';
 
 import './Cart.global.css';
 
-import emptySvg from '../../../assets/svg/empty_red.svg';
+import emptySvg from '../../../assets/svg/empty.svg';
 import EditModal from './EditModal';
 
-const Cart = ({ products }) => {
+const Cart = ({ products, onChange }) => {
   const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState(false);
+
   const getTotalPrice = () => {
     const totalPrice = products.reduce(
       (sum, p) => p.details.price * p.details.quantity + sum,
@@ -24,15 +26,46 @@ const Cart = ({ products }) => {
     return products.reduce((sum, p) => p.details.quantity + sum, 0);
   };
 
+  const handleProductSelected = (product) => {
+    setSelected(product);
+    setOpen(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setSelected(false);
+  };
+
+  const handleEditProduct = (editProduct) => {
+    const newProducts = [...products];
+    const editIndex = newProducts.findIndex(
+      (p) => p.cartId === editProduct.cartId
+    );
+    if (editIndex === -1) return;
+    newProducts[editIndex].details.quantity = editProduct.quantity;
+    newProducts[editIndex].details.price = editProduct.price;
+    onChange(newProducts);
+    handleCloseEditModal();
+  };
+
+  const handleDeleteProduct = (deletedProduct) => {
+    const newProducts = [...products];
+    const deletedIndex = newProducts.findIndex(
+      (p) => p.cartId === deletedProduct.cartId
+    );
+    newProducts.splice(deletedIndex, 1);
+    onChange(newProducts);
+  };
+
   return (
     <div className="Card">
       <EditModal
-        onClose={() => setOpen(false)}
-        product={products[0]}
+        onDelete={handleDeleteProduct}
+        onEdit={handleEditProduct}
+        onClose={handleCloseEditModal}
+        product={selected}
         open={open}
       />
       <Header
-        onClick={() => setOpen((v) => !v)}
         className="Cart-header"
         size="large"
         content="Pedido"
@@ -42,7 +75,11 @@ const Cart = ({ products }) => {
       {products.length ? (
         <div className="Cart-product-list">
           {products.map((product) => (
-            <CartItem key={product.id} product={product} />
+            <CartItem
+              onClick={handleProductSelected}
+              key={product.cartId}
+              product={product}
+            />
           ))}
         </div>
       ) : (
@@ -65,7 +102,7 @@ const Cart = ({ products }) => {
           <h3>{getTotalPrice()}</h3>
         </div>
         <Divider />
-        <Button disabled={!products.length} fluid negative>
+        <Button disabled={!products.length} fluid primary>
           Pagar pedido
         </Button>
       </div>
@@ -75,6 +112,11 @@ const Cart = ({ products }) => {
 
 Cart.propTypes = {
   products: PropTypes.arrayOf(PropTypes.any).isRequired,
+  onChange: PropTypes.func,
+};
+
+Cart.defaultProps = {
+  onChange: () => {},
 };
 
 export default Cart;
