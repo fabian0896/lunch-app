@@ -1,12 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Image, Form, Dimmer, Loader } from 'semantic-ui-react';
+import { Modal, Image, Form, Dimmer, Loader, Message } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
 import searchingSignalSvg from '../../../assets/svg/signal_searching.svg';
+
+const validationSchema = Yup.object().shape({
+  port: Yup.string().required(),
+});
 
 const RfidModal = ({ open, onOpen, onClose }) => {
   const [portOptions, setPortOptions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const formik = useFormik({
+    initialValues: {
+      port: '',
+    },
+    onSubmit: async (value) => {
+      const { port } = value;
+      try {
+        await ipcRenderer.invoke('connectRfid', port);
+        setSuccess(true);
+        setError(false);
+      } catch (err) {
+        setError(true);
+        setSuccess(false);
+      }
+    },
+    validationSchema,
+  });
 
   const getPorts = async () => {
     setLoading(true);
@@ -22,6 +49,8 @@ const RfidModal = ({ open, onOpen, onClose }) => {
   };
 
   useEffect(() => {
+    setError(false);
+    setSuccess(false);
     if (!open) return;
     getPorts();
   }, [open]);
@@ -47,11 +76,34 @@ const RfidModal = ({ open, onOpen, onClose }) => {
           src={searchingSignalSvg}
         />
         <p>Selecciona el puerto en el que esta conectado el lector RFID</p>
-        <Form>
-          <Form.Select id="port" label="puerto" options={portOptions} />
-          <Form.Button positive fluid>
+        <Form success={success} error={error} onSubmit={formik.handleSubmit}>
+          <Form.Dropdown
+            selection
+            placeholder="Selecciona el puerto"
+            value={formik.values.port}
+            onChange={(event, { value }) => formik.setFieldValue('port', value)}
+            id="port"
+            name="port"
+            label="puerto"
+            options={portOptions}
+          />
+          <Form.Button disabled={!formik.isValid} type="submit" positive fluid>
             Conectar
           </Form.Button>
+          <Message error>
+            <Message.Header>Algo salio mal!</Message.Header>
+            <p>
+              No se pudo conectar al dispositivo, verifica que estes
+              seleccionando el puero correcto
+            </p>
+          </Message>
+          <Message success>
+            <Message.Header>Conectado correctamente!</Message.Header>
+            <p>
+              El dispositivo se conecto correctamente, ya puedes empezar a
+              usarlo con tranquilidad
+            </p>
+          </Message>
         </Form>
       </Modal.Content>
     </Modal>

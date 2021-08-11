@@ -10,7 +10,7 @@ import './Cart.global.css';
 import emptySvg from '../../../assets/svg/empty.svg';
 import EditModal from './EditModal';
 
-const Cart = ({ products, onChange }) => {
+const Cart = ({ products, onChange, onPay }) => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(false);
 
@@ -56,8 +56,12 @@ const Cart = ({ products, onChange }) => {
     onChange(newProducts);
   };
 
+  const handlePay = () => {
+    onPay(products);
+  };
+
   return (
-    <div className="Card">
+    <div className="Cart">
       <EditModal
         onDelete={handleDeleteProduct}
         onEdit={handleEditProduct}
@@ -102,7 +106,7 @@ const Cart = ({ products, onChange }) => {
           <h3>{getTotalPrice()}</h3>
         </div>
         <Divider />
-        <Button disabled={!products.length} fluid primary>
+        <Button onClick={handlePay} disabled={!products.length} fluid primary>
           Pagar pedido
         </Button>
       </div>
@@ -113,10 +117,12 @@ const Cart = ({ products, onChange }) => {
 Cart.propTypes = {
   products: PropTypes.arrayOf(PropTypes.any).isRequired,
   onChange: PropTypes.func,
+  onPay: PropTypes.func,
 };
 
 Cart.defaultProps = {
   onChange: () => {},
+  onPay: () => {},
 };
 
 export default Cart;

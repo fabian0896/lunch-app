@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Icon, Header } from 'semantic-ui-react';
+import { ipcRenderer } from 'electron';
+
 import './RfidCard.global.css';
 
 const Card = () => {
@@ -7,14 +9,24 @@ const Card = () => {
   const [success, setSuccess] = useState(false);
   const [complete, setComplete] = useState(false);
 
+  const hanldeCardReadError = () => {
+    setComplete(true);
+    setSuccess(false);
+    setReading(false);
+  };
+
+  const hanldeCardReadSuccess = (event, cartId) => {
+    setComplete(true);
+    setSuccess(true);
+    setReading(false);
+    console.log(cartId);
+  };
+
   const handleRead = () => {
     setReading(true);
-    setTimeout(() => {
-      setComplete(true);
-      setReading(false);
-      const randomSuccess = Math.random() >= 0.5;
-      setSuccess(randomSuccess);
-    }, 10000);
+    ipcRenderer.send('readCard');
+    ipcRenderer.once('read-card-error', hanldeCardReadError);
+    ipcRenderer.once('read-card-success', hanldeCardReadSuccess);
   };
 
   if (complete) {

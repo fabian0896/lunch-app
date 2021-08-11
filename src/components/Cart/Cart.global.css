@@ -1,6 +1,7 @@
-.Card {
+.Cart {
   background: #e2e2e2;
   padding: 15px;
+  padding-top: 0;
   border-radius: 10px;
   height: calc(100vh - 60px);
   display: flex;
@@ -15,6 +16,10 @@
 
 .Cart-product-list {
   flex: 1;
+}
+
+.Cart-product-list::-webkit-scrollbar {
+  display: none;
 }
 
 .Cart-product-empty {
