@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Icon, Header } from 'semantic-ui-react';
 import { ipcRenderer } from 'electron';
 
@@ -9,10 +9,17 @@ const Card = () => {
   const [success, setSuccess] = useState(false);
   const [complete, setComplete] = useState(false);
 
+  useEffect(() => {
+    return () => {
+      ipcRenderer.removeAllListeners();
+    };
+  }, []);
+
   const hanldeCardReadError = () => {
     setComplete(true);
     setSuccess(false);
     setReading(false);
+    ipcRenderer.removeAllListeners();
   };
 
   const hanldeCardReadSuccess = (event, cartId) => {
@@ -20,11 +27,12 @@ const Card = () => {
     setSuccess(true);
     setReading(false);
     console.log(cartId);
+    ipcRenderer.removeAllListeners();
   };
 
   const handleRead = () => {
     setReading(true);
-    ipcRenderer.send('readCard');
+    ipcRenderer.sendSync('readCard');
     ipcRenderer.once('read-card-error', hanldeCardReadError);
     ipcRenderer.once('read-card-success', hanldeCardReadSuccess);
   };

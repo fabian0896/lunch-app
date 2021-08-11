@@ -23,6 +23,8 @@ module.exports = function setupRfid() {
         event.reply('read-card-success', '123456789');
       }
     }, 5000);
-    event.returnValue = 'Funcion de cancelación';
+    event.returnValue = () => {
+      console.log('Se cancelo la lectura');
+    };
   });
 };
