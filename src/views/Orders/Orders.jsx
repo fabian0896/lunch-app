@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Grid } from 'semantic-ui-react';
+import { Divider, Grid } from 'semantic-ui-react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { ProductCard, Cart, ReadCardModal } from '../../components';
 import { database } from '../../services/database';
 
+import './Orders.global.css';
+
 const Orders = () => {
   const [products, setProducts] = useState([]);
+  const [favProducts, setFavProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [payModal, setPayModal] = useState(false);
 
@@ -32,7 +35,9 @@ const Orders = () => {
   const getAllProducts = async () => {
     const { Product } = database();
     const reslut = await Product.getAll(true);
+    const favReslut = await Product.getFavorites(true);
     setProducts(reslut);
+    setFavProducts(favReslut);
   };
 
   useEffect(() => {
@@ -63,7 +68,25 @@ const Orders = () => {
         open={payModal}
       />
       <Grid>
-        <Grid.Column width={10}>
+        <Grid.Column className="Orders-products-container" width={10}>
+          {!!favProducts.length && (
+            <>
+              <Divider horizontal>Favoritos</Divider>
+              <Grid columns={2}>
+                {favProducts.map((product) => (
+                  <Grid.Column key={product.id}>
+                    <ProductCard
+                      onAddCart={handleAddToCart}
+                      product={product}
+                    />
+                  </Grid.Column>
+                ))}
+              </Grid>
+            </>
+          )}
+          <Divider style={{ marginTop: '35px' }} horizontal>
+            Todos los productos
+          </Divider>
           <Grid columns={2}>
             {products.map((product) => (
               <Grid.Column key={product.id}>

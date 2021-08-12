@@ -9,12 +9,15 @@ const Products = () => {
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(false);
   const [products, setProducts] = useState([]);
+  const [favProducts, setFavProducts] = useState([]);
 
   const getAllProducts = async () => {
     const { Product } = database();
     const reslut = await Product.getAll(true);
+    const favoriteResults = await Product.getFavorites(true);
     console.log(reslut);
     setProducts(reslut);
+    setFavProducts(favoriteResults);
   };
 
   const handleOpenProductModal = () => {
@@ -64,6 +67,12 @@ const Products = () => {
     handleOpenProductModal();
   };
 
+  const handleFavorite = async (product) => {
+    const { Product } = database();
+    await Product.toggleFavorite(product.id);
+    await getAllProducts();
+  };
+
   return (
     <div>
       <ConfirmModal
@@ -93,11 +102,31 @@ const Products = () => {
           <Icon name="add" />
         </Button.Content>
       </Button>
-      <Divider />
+      {!!favProducts.length && (
+        <>
+          <Divider horizontal>Favoritos</Divider>
+          <Grid columns={3}>
+            {favProducts.map((product) => (
+              <Grid.Column key={product.id}>
+                <ProductCard
+                  onFav={handleFavorite}
+                  onEdit={() => hanleEditProduct(product)}
+                  onDelete={() => handleOpenConfirmModal(product)}
+                  product={product}
+                />
+              </Grid.Column>
+            ))}
+          </Grid>
+        </>
+      )}
+      <Divider style={{ marginTop: '35px' }} horizontal>
+        Todos
+      </Divider>
       <Grid columns={3}>
         {products.map((product) => (
           <Grid.Column key={product.id}>
             <ProductCard
+              onFav={handleFavorite}
               onEdit={() => hanleEditProduct(product)}
               onDelete={() => handleOpenConfirmModal(product)}
               product={product}

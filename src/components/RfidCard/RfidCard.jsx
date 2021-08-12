@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Icon, Header } from 'semantic-ui-react';
 import { ipcRenderer } from 'electron';
+import PropTypes from 'prop-types';
+import { v4 as uuidv4 } from 'uuid';
 
 import './RfidCard.global.css';
 
-const Card = () => {
+const Card = ({ onChange, error }) => {
   const [reading, setReading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [complete, setComplete] = useState(false);
@@ -22,23 +24,36 @@ const Card = () => {
     ipcRenderer.removeAllListeners();
   };
 
-  const hanldeCardReadSuccess = (event, cartId) => {
+  const hanldeCardReadSuccess = (event, cardId) => {
     setComplete(true);
     setSuccess(true);
     setReading(false);
-    console.log(cartId);
+    const testCardId = uuidv4();
+    console.log(testCardId);
+    onChange(testCardId);
     ipcRenderer.removeAllListeners();
   };
 
   const handleRead = () => {
     setReading(true);
-    ipcRenderer.sendSync('readCard');
+    ipcRenderer.send('readCard');
     ipcRenderer.once('read-card-error', hanldeCardReadError);
     ipcRenderer.once('read-card-success', hanldeCardReadSuccess);
   };
 
   if (complete) {
     if (success) {
+      if (error) {
+        return (
+          <div className="RfidCard error">
+            <Header size="small" icon textAlign="center">
+              <Icon size="small" name="close" circular />
+              <Header.Content>Que mal!!</Header.Content>
+              <Header.Subheader>{error}</Header.Subheader>
+            </Header>
+          </div>
+        );
+      }
       return (
         <div className="RfidCard success">
           <Header size="small" icon textAlign="center">
@@ -78,6 +93,15 @@ const Card = () => {
       <Button onClick={handleRead}>Escanear</Button>
     </div>
   );
+};
+
+Card.propTypes = {
+  onChange: PropTypes.func,
+  error: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+};
+Card.defaultProps = {
+  onChange: () => {},
+  error: false,
 };
 
 export default Card;

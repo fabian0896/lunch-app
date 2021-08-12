@@ -1,11 +1,33 @@
 import React from 'react';
-import { Modal, Form, Image } from 'semantic-ui-react';
+import { Modal, Form, Image, Message } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-// eslint-disable-next-line import/no-unresolved
+import { useFormik } from 'formik';
 import RfidCard from '../RfidCard';
 import addUserSvg from '../../../assets/svg/profile_pic.svg';
 
-const UserModal = ({ companyOptions, open, onClose, onOpen }) => {
+import { database } from '../../services/database';
+
+const UserModal = ({ companyOptions, open, onClose, onOpen, onSubmit }) => {
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      company: '',
+      cardId: '',
+    },
+    onSubmit: async (values, actios) => {
+      await onSubmit(values);
+      actios.resetForm();
+    },
+    validate: async (values) => {
+      const { User } = database();
+      const errors = {};
+      const user = await User.getByCardId(values.cardId);
+      if (user) {
+        errors.cardId = 'La tarjeta ya esta registrada en el sistema';
+      }
+      return errors;
+    },
+  });
   return (
     <Modal
       closeIcon
@@ -15,11 +37,16 @@ const UserModal = ({ companyOptions, open, onClose, onOpen }) => {
       onOpen={onOpen}
       size="mini"
     >
-      <Modal.Header>Agregar Usuario</Modal.Header>
       <Modal.Content>
         <Image centered size="small" wrapped src={addUserSvg} />
-        <Form>
-          <Form.Input name="name" id="name" label="Nombre" />
+        <Form error={!!formik.errors.cardId} onSubmit={formik.handleSubmit}>
+          <Form.Input
+            onChange={formik.handleChange}
+            value={formik.values.name}
+            name="name"
+            id="name"
+            label="Nombre"
+          />
           {false && (
             <Form.Input
               type="number"
@@ -29,8 +56,10 @@ const UserModal = ({ companyOptions, open, onClose, onOpen }) => {
             />
           )}
           <Form.Dropdown
-            // eslint-disable-next-line prettier/prettier
-            style={{color: '#000000'}}
+            value={formik.values.company}
+            onChange={(event, { value }) =>
+              formik.setFieldValue('company', value)
+            }
             selection
             search
             options={companyOptions}
@@ -38,9 +67,12 @@ const UserModal = ({ companyOptions, open, onClose, onOpen }) => {
             label="Empresa"
             name="company"
           />
-          <RfidCard />
-          <Form.Button type="submit" fluid positive>
-            Agregar
+          <RfidCard
+            error={formik.errors.cardId}
+            onChange={(value) => formik.setFieldValue('cardId', value)}
+          />
+          <Form.Button disabled={!formik.isValid} type="submit" fluid positive>
+            Agregar usuario
           </Form.Button>
         </Form>
       </Modal.Content>
@@ -53,6 +85,11 @@ UserModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onOpen: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func,
+};
+
+UserModal.defaultProps = {
+  onSubmit: () => {},
 };
 
 export default UserModal;

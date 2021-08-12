@@ -5,8 +5,16 @@ import { UserModal } from '../../components';
 import { database } from '../../services/database';
 
 const Users = () => {
+  const [users, setUsers] = useState([]);
   const [companyList, setCompanyList] = useState([]);
   const [openUserModal, setOpenUserModal] = useState(false);
+
+  const getAllUsers = async () => {
+    const { User } = database();
+    const respUsers = await User.getAll(true);
+    setUsers(respUsers);
+    console.log(respUsers);
+  };
 
   const getCompaniesList = async () => {
     const { Company } = database();
@@ -28,12 +36,21 @@ const Users = () => {
   };
 
   useEffect(() => {
+    getAllUsers();
     getCompaniesList();
   }, []);
+
+  const handleCreateUser = async (values) => {
+    const { User } = database();
+    await User.create(values);
+    handleCloseUserModal();
+    await getAllUsers();
+  };
 
   return (
     <div>
       <UserModal
+        onSubmit={handleCreateUser}
         open={openUserModal}
         onClose={handleCloseUserModal}
         onOpen={handleOpenUserModal}

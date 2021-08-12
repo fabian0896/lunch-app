@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Card, Dimmer, Form } from 'semantic-ui-react';
+import { Button, Card, Dimmer, Form, Icon } from 'semantic-ui-react';
 import clsx from 'clsx';
 import numeral from 'numeral';
 import { useFormik } from 'formik';
@@ -10,7 +10,7 @@ import './ProductCard.global.css';
 
 import hamburgerSvg from '../../../assets/svg/hamburger.svg';
 
-const ProductCard = ({ product, onDelete, onEdit, onAddCart }) => {
+const ProductCard = ({ product, onDelete, onEdit, onAddCart, onFav }) => {
   const [active, setActive] = useState(false);
   const formik = useFormik({
     initialValues: {
@@ -43,8 +43,21 @@ const ProductCard = ({ product, onDelete, onEdit, onAddCart }) => {
     formik.setFieldValue('quantity', quantity);
   };
 
+  const handleFav = () => {
+    onFav(product);
+  };
+
   return (
     <Card style={{ overflow: 'hidden' }} className="ProductCard">
+      {onFav && (
+        <Icon
+          onClick={handleFav}
+          color="red"
+          size="large"
+          name={product.favorite ? 'heart' : 'heart outline'}
+          className="ProductCard-start-fav"
+        />
+      )}
       <Dimmer.Dimmable
         onMouseLeave={handleCloseDimmer}
         onMouseEnter={() => setActive(true)}
@@ -129,12 +142,14 @@ ProductCard.propTypes = {
   onEdit: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
   onDelete: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
   onAddCart: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+  onFav: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
 };
 
 ProductCard.defaultProps = {
   onEdit: false,
   onDelete: false,
   onAddCart: false,
+  onFav: false,
 };
 
 export default ProductCard;
