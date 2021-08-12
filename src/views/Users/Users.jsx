@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Header, Button, Divider, Icon } from 'semantic-ui-react';
+import { Header, Button, Divider, Icon, Search } from 'semantic-ui-react';
 
-import { UserModal } from '../../components';
+import { UserModal, UserList } from '../../components';
 import { database } from '../../services/database';
 
 const Users = () => {
@@ -69,6 +69,8 @@ const Users = () => {
         </Button.Content>
       </Button>
       <Divider />
+      <Search fluid />
+      <UserList users={users} />
     </div>
   );
 };
