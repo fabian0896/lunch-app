@@ -1,15 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table, Header, Image, Popup, Iconc, Icon } from 'semantic-ui-react';
+import {
+  Table,
+  Header,
+  Image,
+  Popup,
+  Icon,
+  Button,
+  Grid,
+} from 'semantic-ui-react';
+import { startCase, debounce } from 'lodash';
+
+import UserSearch from '../UserSearch';
 
 import avatarSvg from '../../../assets/svg/profile_pic.svg';
 
-const UserList = ({ users }) => {
+const UserList = ({ users, onSearchChange, searchResults }) => {
+  const handleOnResultSelect = (data) => {
+    console.log(data);
+  };
+
   return (
     <Table selectable>
       <Table.Header>
         <Table.Row>
-          <Table.HeaderCell colspan="2">Nombre</Table.HeaderCell>
+          <Table.HeaderCell colSpan="2">
+            <Grid>
+              <Grid.Column width="11">
+                <UserSearch
+                  results={searchResults}
+                  onSearchChange={onSearchChange}
+                  onSelect={handleOnResultSelect}
+                />
+              </Grid.Column>
+              <Grid.Column textAlign="right" width="5">
+                <Button secondary content="Buscar con tarjeta" icon="search" />
+              </Grid.Column>
+            </Grid>
+          </Table.HeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>
@@ -19,7 +47,7 @@ const UserList = ({ users }) => {
               <Header as="h4" image>
                 <Image rounded src={avatarSvg} />
                 <Header.Content>
-                  {user.name}
+                  {startCase(user.name)}
                   <Header.Subheader>
                     {user.company?.name || 'Sin empresa'}
                   </Header.Subheader>
@@ -27,10 +55,12 @@ const UserList = ({ users }) => {
               </Header>
             </Table.Cell>
             <Table.Cell textAlign="right">
-              <Popup
-                content="El usuario no tiene empresa asignada"
-                trigger={<Icon name="warning sign" color="yellow" />}
-              />
+              {!user.company && (
+                <Popup
+                  content="El usuario no tiene empresa asignada"
+                  trigger={<Icon name="warning sign" color="yellow" />}
+                />
+              )}
             </Table.Cell>
           </Table.Row>
         ))}
@@ -41,6 +71,13 @@ const UserList = ({ users }) => {
 
 UserList.propTypes = {
   users: PropTypes.arrayOf(PropTypes.any).isRequired,
+  onSearchChange: PropTypes.func,
+  searchResults: PropTypes.arrayOf(PropTypes.any),
+};
+
+UserList.defaultProps = {
+  onSearchChange: () => {},
+  searchResults: [],
 };
 
 export default UserList;

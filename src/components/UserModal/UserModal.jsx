@@ -2,10 +2,17 @@ import React from 'react';
 import { Modal, Form, Image, Message } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import RfidCard from '../RfidCard';
 import addUserSvg from '../../../assets/svg/profile_pic.svg';
 
 import { database } from '../../services/database';
+
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required(),
+  company: Yup.number().required(),
+  cardId: Yup.string().required(),
+});
 
 const UserModal = ({ companyOptions, open, onClose, onOpen, onSubmit }) => {
   const formik = useFormik({
@@ -14,6 +21,7 @@ const UserModal = ({ companyOptions, open, onClose, onOpen, onSubmit }) => {
       company: '',
       cardId: '',
     },
+    validationSchema,
     onSubmit: async (values, actios) => {
       await onSubmit(values);
       actios.resetForm();

@@ -21,6 +21,7 @@ const Card = ({ onChange, error }) => {
     setComplete(true);
     setSuccess(false);
     setReading(false);
+    onChange(null);
     ipcRenderer.removeAllListeners();
   };
 
@@ -36,9 +37,18 @@ const Card = ({ onChange, error }) => {
 
   const handleRead = () => {
     setReading(true);
+    setComplete(false);
+    setSuccess(false);
     ipcRenderer.send('readCard');
     ipcRenderer.once('read-card-error', hanldeCardReadError);
     ipcRenderer.once('read-card-success', hanldeCardReadSuccess);
+  };
+
+  const handleCancel = () => {
+    setReading(false);
+    setComplete(false);
+    setSuccess(false);
+    ipcRenderer.removeAllListeners();
   };
 
   if (complete) {
@@ -68,6 +78,11 @@ const Card = ({ onChange, error }) => {
     }
     return (
       <div className="RfidCard error">
+        <Icon
+          onClick={handleRead}
+          className="RfidCard-action-icon"
+          name="redo"
+        />
         <Header size="small" icon textAlign="center">
           <Icon size="small" name="close" circular />
           <Header.Content>Que mal!!</Header.Content>
@@ -81,6 +96,11 @@ const Card = ({ onChange, error }) => {
   if (reading) {
     return (
       <div className="RfidCard reading">
+        <Icon
+          onClick={handleCancel}
+          className="RfidCard-action-icon"
+          name="close"
+        />
         <div className="Rfid-circle">
           <Icon size="large" color="grey" inverted name="wifi" />
         </div>

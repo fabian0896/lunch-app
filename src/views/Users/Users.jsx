@@ -1,5 +1,6 @@
+import { result } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { Header, Button, Divider, Icon, Search } from 'semantic-ui-react';
+import { Header, Button, Divider, Icon } from 'semantic-ui-react';
 
 import { UserModal, UserList } from '../../components';
 import { database } from '../../services/database';
@@ -8,6 +9,7 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [companyList, setCompanyList] = useState([]);
   const [openUserModal, setOpenUserModal] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
 
   const getAllUsers = async () => {
     const { User } = database();
@@ -47,6 +49,12 @@ const Users = () => {
     await getAllUsers();
   };
 
+  const handleSearchChange = async (e, data) => {
+    const { User } = database();
+    const results = await User.searchByName(data.value);
+    setSearchResults(results);
+  };
+
   return (
     <div>
       <UserModal
@@ -69,8 +77,11 @@ const Users = () => {
         </Button.Content>
       </Button>
       <Divider />
-      <Search fluid />
-      <UserList users={users} />
+      <UserList
+        searchResults={searchResults}
+        onSearchChange={handleSearchChange}
+        users={users}
+      />
     </div>
   );
 };
