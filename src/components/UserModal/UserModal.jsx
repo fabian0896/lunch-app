@@ -1,7 +1,8 @@
-import React from 'react';
-import { Modal, Form, Image, Message } from 'semantic-ui-react';
+import React, { useEffect } from 'react';
+import { Modal, Form, Image } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
+import { startCase } from 'lodash';
 import * as Yup from 'yup';
 import RfidCard from '../RfidCard';
 import addUserSvg from '../../../assets/svg/profile_pic.svg';
@@ -14,7 +15,14 @@ const validationSchema = Yup.object().shape({
   cardId: Yup.string().required(),
 });
 
-const UserModal = ({ companyOptions, open, onClose, onOpen, onSubmit }) => {
+const UserModal = ({
+  companyOptions,
+  open,
+  onClose,
+  onOpen,
+  onSubmit,
+  editData,
+}) => {
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -27,8 +35,9 @@ const UserModal = ({ companyOptions, open, onClose, onOpen, onSubmit }) => {
       actios.resetForm();
     },
     validate: async (values) => {
-      const { User } = database();
       const errors = {};
+      if (editData) return errors;
+      const { User } = database();
       const user = await User.getByCardId(values.cardId);
       if (user) {
         errors.cardId = 'La tarjeta ya esta registrada en el sistema';
@@ -36,6 +45,22 @@ const UserModal = ({ companyOptions, open, onClose, onOpen, onSubmit }) => {
       return errors;
     },
   });
+
+  useEffect(() => {
+    if (!open) {
+      formik.resetForm();
+      return;
+    }
+    if (editData) {
+      formik.setValues({
+        name: startCase(editData.name),
+        company: editData.companyId,
+        cardId: editData.cardId,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, editData]);
+
   return (
     <Modal
       closeIcon
@@ -79,8 +104,11 @@ const UserModal = ({ companyOptions, open, onClose, onOpen, onSubmit }) => {
             error={formik.errors.cardId}
             onChange={(value) => formik.setFieldValue('cardId', value)}
           />
+          <p style={{ textAlign: 'center' }}>
+            <strong>Tarjeta</strong> : {formik.values.cardId || 'Sin lectura'}
+          </p>
           <Form.Button disabled={!formik.isValid} type="submit" fluid positive>
-            Agregar usuario
+            {!editData ? 'Agregar usuario' : 'Editar Usuario'}
           </Form.Button>
         </Form>
       </Modal.Content>
@@ -94,10 +122,12 @@ UserModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onOpen: PropTypes.func.isRequired,
   onSubmit: PropTypes.func,
+  editData: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
 };
 
 UserModal.defaultProps = {
   onSubmit: () => {},
+  editData: false,
 };
 
 export default UserModal;

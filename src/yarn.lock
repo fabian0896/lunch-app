@@ -720,7 +720,7 @@ lru-cache@^6.0.0:
 
 "lunch-db@https://github.com/fabian0896/lunch-db.git":
   version "1.0.0"
-  resolved "https://github.com/fabian0896/lunch-db.git#4c6a7fb2b34c957b834a5dce969a77b03814ae56"
+  resolved "https://github.com/fabian0896/lunch-db.git#3aaf2c9783712354b1cd66d0e21bd25a09a05d06"
   dependencies:
     defaults "^1.0.3"
     sequelize "^6.6.5"

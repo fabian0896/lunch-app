@@ -3,9 +3,9 @@ import { NavLink } from 'react-router-dom';
 import { Header } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
-const Item = ({ icon, title, to }) => {
+const Item = ({ icon, title, to, exact }) => {
   return (
-    <NavLink exact to={to} activeClassName="active">
+    <NavLink exact={exact} to={to} activeClassName="active">
       <li>
         <b />
         <b />
@@ -25,6 +25,11 @@ Item.propTypes = {
   icon: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   to: PropTypes.string.isRequired,
+  exact: PropTypes.bool,
+};
+
+Item.defaultProps = {
+  exact: false,
 };
 
 export default Item;

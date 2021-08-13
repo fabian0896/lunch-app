@@ -110,7 +110,9 @@ const Card = ({ onChange, error }) => {
 
   return (
     <div className="RfidCard">
-      <Button onClick={handleRead}>Escanear</Button>
+      <Button type="button" onClick={handleRead}>
+        Escanear
+      </Button>
     </div>
   );
 };

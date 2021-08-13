@@ -13,3 +13,4 @@ export { default as Cart } from './Cart';
 export { default as ReadCardModal } from './ReadCardModal';
 export { default as UserList } from './UserList';
 export { default as UserSearch } from './UserSearch';
+export { default as UserHeader } from './UserHeader';

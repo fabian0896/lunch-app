@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { startCase, debounce } from 'lodash';
 import { Search, Input } from 'semantic-ui-react';
@@ -23,6 +23,12 @@ const UserSearch = ({ results, onSearchChange, onSelect }) => {
     const user = results.find((r) => r.id === data.result.id);
     onSelect(user);
   };
+
+  useEffect(() => {
+    return () => {
+      handleChandeSearch.cancel();
+    };
+  }, [handleChandeSearch]);
 
   return (
     <Search

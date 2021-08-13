@@ -13,8 +13,10 @@ import {
   ProductsView,
   OrdersView,
   CompaniesView,
+  UserDetailsView,
 } from './views';
 import { initDb } from './services/database';
+import UserDetails from './views/UserDetails';
 
 export default function App() {
   const setupConfiguration = async () => {
@@ -31,6 +33,7 @@ export default function App() {
           <Route exact path="/orders" component={OrdersView} />
           <Route exact path="/products" component={ProductsView} />
           <Route exact path="/users" component={UsersView} />
+          <Route exact path="/users/:id" component={UserDetails} />
           <Route exact path="/companies" component={CompaniesView} />
           <Route exact path="/" component={HomeView} />
           <Route path="*">

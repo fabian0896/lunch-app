@@ -15,9 +15,9 @@ import UserSearch from '../UserSearch';
 
 import avatarSvg from '../../../assets/svg/profile_pic.svg';
 
-const UserList = ({ users, onSearchChange, searchResults }) => {
+const UserList = ({ users, onSearchChange, searchResults, onSelect }) => {
   const handleOnResultSelect = (data) => {
-    console.log(data);
+    onSelect(data);
   };
 
   return (
@@ -42,7 +42,11 @@ const UserList = ({ users, onSearchChange, searchResults }) => {
       </Table.Header>
       <Table.Body>
         {users.map((user) => (
-          <Table.Row key={user.id}>
+          <Table.Row
+            style={{ cursor: 'pointer' }}
+            onClick={() => onSelect(user)}
+            key={user.id}
+          >
             <Table.Cell>
               <Header as="h4" image>
                 <Image rounded src={avatarSvg} />
@@ -72,11 +76,13 @@ const UserList = ({ users, onSearchChange, searchResults }) => {
 UserList.propTypes = {
   users: PropTypes.arrayOf(PropTypes.any).isRequired,
   onSearchChange: PropTypes.func,
+  onSelect: PropTypes.func,
   searchResults: PropTypes.arrayOf(PropTypes.any),
 };
 
 UserList.defaultProps = {
   onSearchChange: () => {},
+  onSelect: () => {},
   searchResults: [],
 };
 

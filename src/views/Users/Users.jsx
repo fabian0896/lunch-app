@@ -1,6 +1,7 @@
 import { result } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Header, Button, Divider, Icon } from 'semantic-ui-react';
+import { useHistory } from 'react-router-dom';
 
 import { UserModal, UserList } from '../../components';
 import { database } from '../../services/database';
@@ -11,11 +12,12 @@ const Users = () => {
   const [openUserModal, setOpenUserModal] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
 
+  const history = useHistory();
+
   const getAllUsers = async () => {
     const { User } = database();
     const respUsers = await User.getAll(true);
     setUsers(respUsers);
-    console.log(respUsers);
   };
 
   const getCompaniesList = async () => {
@@ -55,6 +57,10 @@ const Users = () => {
     setSearchResults(results);
   };
 
+  const goToUser = (id) => {
+    history.push(`/users/${id}`);
+  };
+
   return (
     <div>
       <UserModal
@@ -78,6 +84,7 @@ const Users = () => {
       </Button>
       <Divider />
       <UserList
+        onSelect={({ id }) => goToUser(id)}
         searchResults={searchResults}
         onSearchChange={handleSearchChange}
         users={users}
