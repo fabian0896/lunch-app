@@ -1,9 +1,10 @@
 .UserHeader {
   position: relative;
-  background: #d3d3d3;
+  background: #eee;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
+  margin-bottom: 25px;
 }
 
 .UserHeader-back-arrow {

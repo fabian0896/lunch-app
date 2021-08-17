@@ -1,10 +1,13 @@
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Header, Image, Table, Button, Input, Icon } from 'semantic-ui-react';
+import { startCase } from 'lodash';
+import moment from 'moment';
 
 import addTaskSvg from '../../../assets/svg/empty.svg';
+import userSvg from '../../../assets/svg/profile_pic.svg';
 
-const CompanyList = ({ company, onDelet, onUpdate }) => {
+const CompanyList = ({ company, onDelet, onUpdate, onSeeDatails }) => {
   const [edit, setEdit] = useState(false);
   const [editName, setEditName] = useState(company.name);
   const [loading, setLoading] = useState(false);
@@ -80,9 +83,9 @@ const CompanyList = ({ company, onDelet, onUpdate }) => {
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {false && (
+        {!company.users.length && (
           <Table.Row>
-            <Table.Cell style={{ padding: '20px' }} colspan="2">
+            <Table.Cell style={{ padding: '20px' }} colSpan="2">
               <Image centered size="small" src={addTaskSvg} />
               <p style={{ textAlign: 'center', marginTop: '15px' }}>
                 No hay usuarios registrados a esta empresa
@@ -90,78 +93,29 @@ const CompanyList = ({ company, onDelet, onUpdate }) => {
             </Table.Cell>
           </Table.Row>
         )}
-        <Table.Row>
-          <Table.Cell>
-            <Header as="h4" image>
-              <Image
-                src="https://react.semantic-ui.com/images/avatar/small/lena.png"
-                rounded
+        {company.users.map((user) => (
+          <Table.Row key={user.id}>
+            <Table.Cell>
+              <Header as="h4" image>
+                <Image src={userSvg} rounded size="mini" />
+                <Header.Content>
+                  {startCase(user.name)}
+                  <Header.Subheader>
+                    {moment(user.updatedAt).format('DD/MM/YYYY')}
+                  </Header.Subheader>
+                </Header.Content>
+              </Header>
+            </Table.Cell>
+            <Table.Cell textAlign="right">
+              <Button
+                onClick={() => onSeeDatails(user)}
+                circular
+                icon="eye"
                 size="mini"
               />
-              <Header.Content>
-                Lena
-                <Header.Subheader>Human Resources</Header.Subheader>
-              </Header.Content>
-            </Header>
-          </Table.Cell>
-          <Table.Cell textAlign="right">
-            <Button circular icon="eye" size="mini" />
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>
-            <Header as="h4" image>
-              <Image
-                src="https://react.semantic-ui.com/images/avatar/small/matthew.png"
-                rounded
-                size="mini"
-              />
-              <Header.Content>
-                Matthew
-                <Header.Subheader>Fabric Design</Header.Subheader>
-              </Header.Content>
-            </Header>
-          </Table.Cell>
-          <Table.Cell textAlign="right">
-            <Button circular icon="eye" size="mini" />
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>
-            <Header as="h4" image>
-              <Image
-                src="https://react.semantic-ui.com/images/avatar/small/lindsay.png"
-                rounded
-                size="mini"
-              />
-              <Header.Content>
-                Lindsay
-                <Header.Subheader>Entertainment</Header.Subheader>
-              </Header.Content>
-            </Header>
-          </Table.Cell>
-          <Table.Cell textAlign="right">
-            <Button circular icon="eye" size="mini" />
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>
-            <Header as="h4" image>
-              <Image
-                src="https://react.semantic-ui.com/images/avatar/small/mark.png"
-                rounded
-                size="mini"
-              />
-              <Header.Content>
-                Mark
-                <Header.Subheader>Executive</Header.Subheader>
-              </Header.Content>
-            </Header>
-          </Table.Cell>
-          <Table.Cell textAlign="right">
-            <Button circular icon="eye" size="mini" />
-          </Table.Cell>
-        </Table.Row>
+            </Table.Cell>
+          </Table.Row>
+        ))}
       </Table.Body>
     </Table>
   );
@@ -171,6 +125,7 @@ CompanyList.propTypes = {
   company: PropTypes.objectOf(PropTypes.any).isRequired,
   onDelet: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
+  onSeeDatails: PropTypes.func.isRequired,
 };
 
 export default CompanyList;

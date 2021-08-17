@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
+import { Divider } from 'semantic-ui-react';
 
-import { UserHeader, UserModal } from '../../components';
+import { UserHeader, UserModal, OrderDetails } from '../../components';
 import { database } from '../../services/database';
 
 const UserDetails = () => {
@@ -73,7 +74,14 @@ const UserDetails = () => {
         onGoBack={handleGoBack}
         user={user}
       />
-      <div style={{ height: 1000 }} />
+      <Divider style={{ margin: '30px 0' }} horizontal>
+        Compras
+      </Divider>
+      <OrderDetails />
+      <OrderDetails />
+      <OrderDetails />
+      <OrderDetails />
+      <OrderDetails />
     </div>
   );
 };

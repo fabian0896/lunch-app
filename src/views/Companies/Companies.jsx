@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Header, Icon, Divider } from 'semantic-ui-react';
+import { useHistory } from 'react-router-dom';
 import { database } from '../../services/database';
 import { CompanyModal, CompanyList, ConfirmModal } from '../../components';
 
@@ -9,9 +10,12 @@ const Companies = () => {
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState({});
 
+  const history = useHistory();
+
   const getCompanies = async () => {
     const { Company } = database();
-    const results = await Company.getList(true);
+    const results = await Company.getListWithUsers(true);
+    console.log(results);
     setCompanies(results);
   };
 
@@ -67,6 +71,10 @@ const Companies = () => {
     getCompanies();
   }, []);
 
+  const handleSeeDatails = ({ id }) => {
+    history.push(`/users/${id}`);
+  };
+
   return (
     <div>
       <ConfirmModal
@@ -97,6 +105,7 @@ const Companies = () => {
       <Divider />
       {companies.map((company) => (
         <CompanyList
+          onSeeDatails={handleSeeDatails}
           onUpdate={handleUpdate}
           onDelet={handleOpenConfirm}
           key={company.id}
