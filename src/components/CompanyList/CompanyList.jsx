@@ -94,7 +94,8 @@ const CompanyList = ({ company, onDelet, onUpdate, onSeeDatails }) => {
           </Table.Row>
         )}
         {company.users.map((user) => (
-          <Table.Row key={user.id}>
+          // eslint-disable-next-line no-underscore-dangle
+          <Table.Row key={user._id}>
             <Table.Cell>
               <Header as="h4" image>
                 <Image src={userSvg} rounded size="mini" />

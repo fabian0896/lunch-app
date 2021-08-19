@@ -1,8 +1,14 @@
+import { startCase } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { Divider } from 'semantic-ui-react';
 
-import { UserHeader, UserModal, OrderDetails } from '../../components';
+import {
+  UserHeader,
+  UserModal,
+  OrderDetails,
+  ConfirmModal,
+} from '../../components';
 import { database } from '../../services/database';
 
 const UserDetails = () => {
@@ -11,6 +17,7 @@ const UserDetails = () => {
   const [user, setUser] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [companyList, setCompanyList] = useState([]);
+  const [deleteModal, setDeleteModal] = useState(false);
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -48,11 +55,25 @@ const UserDetails = () => {
   };
 
   const handleEditUser = async (value) => {
-    console.log(value);
     const { User } = database();
     await User.update(user.id, value);
     await getUserData();
     handleCloseModal();
+  };
+
+  const handleOpenDeleteModal = () => {
+    setDeleteModal(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setDeleteModal(false);
+  };
+
+  const handleConfirmDelete = async () => {
+    const { User } = database();
+    await User.destroy(user);
+    history.goBack();
+    setDeleteModal(false);
   };
 
   if (!user) {
@@ -61,6 +82,15 @@ const UserDetails = () => {
 
   return (
     <div>
+      <ConfirmModal
+        title="Borrar usuario"
+        message={`Esta segur@ que desea eliminar el usuario ${startCase(
+          user.name
+        )}. Los datos no se podran recuperar`}
+        open={deleteModal}
+        onClose={handleCloseDeleteModal}
+        onConfirm={handleConfirmDelete}
+      />
       <UserModal
         onSubmit={handleEditUser}
         editData={user}
@@ -70,6 +100,7 @@ const UserDetails = () => {
         onOpen={handleOpenModal}
       />
       <UserHeader
+        onDelete={handleOpenDeleteModal}
         onEdit={handleOpenModal}
         onGoBack={handleGoBack}
         user={user}

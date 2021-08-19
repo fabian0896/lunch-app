@@ -71,7 +71,8 @@ const Companies = () => {
     getCompanies();
   }, []);
 
-  const handleSeeDatails = ({ id }) => {
+  const handleSeeDatails = (user) => {
+    const { _id: id } = user;
     history.push(`/users/${id}`);
   };
 

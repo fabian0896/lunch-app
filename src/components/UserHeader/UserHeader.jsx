@@ -8,7 +8,7 @@ import userSvg from '../../../assets/svg/profile_pic.svg';
 
 import './UserHeader.global.css';
 
-const UserHeader = ({ user, onGoBack, onEdit }) => {
+const UserHeader = ({ user, onGoBack, onEdit, onDelete }) => {
   return (
     <div className="UserHeader">
       <Icon
@@ -32,7 +32,7 @@ const UserHeader = ({ user, onGoBack, onEdit }) => {
       <Divider />
       <div className="UserHeader-actions">
         <Button onClick={onEdit} content="editar" secondary icon="edit" />
-        <Button negative content="Eliminar" icon="trash" />
+        <Button onClick={onDelete} negative content="Eliminar" icon="trash" />
       </div>
     </div>
   );
@@ -42,9 +42,11 @@ UserHeader.propTypes = {
   user: PropTypes.objectOf(PropTypes.any).isRequired,
   onGoBack: PropTypes.func,
   onEdit: PropTypes.func,
+  onDelete: PropTypes.func,
 };
 UserHeader.defaultProps = {
   onGoBack: () => {},
   onEdit: () => {},
+  onDelete: () => {},
 };
 export default UserHeader;

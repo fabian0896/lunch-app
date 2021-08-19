@@ -30,11 +30,11 @@ const validationSchema = Yup.object().shape({
 
 const ProductModal = ({ open, onOpen, onClose, onSubmit, editValues }) => {
   const formik = useFormik({
-    initialValues: defaults(editValues, {
+    initialValues: {
       name: '',
       price: '',
       image: '',
-    }),
+    },
     onSubmit: async (values, actions) => {
       values.price = parseInt(values.price, 10);
       await onSubmit(values, actions);
@@ -53,13 +53,17 @@ const ProductModal = ({ open, onOpen, onClose, onSubmit, editValues }) => {
   };
 
   useEffect(() => {
+    if (!open) {
+      formik.resetForm();
+      return;
+    }
     if (!editValues) {
       formik.resetForm();
       return;
     }
     formik.setValues(editValues);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editValues]);
+  }, [editValues, open]);
 
   return (
     <Modal

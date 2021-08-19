@@ -15,7 +15,6 @@ const Products = () => {
     const { Product } = database();
     const reslut = await Product.getAll(true);
     const favoriteResults = await Product.getFavorites(true);
-    console.log(reslut);
     setProducts(reslut);
     setFavProducts(favoriteResults);
   };

@@ -58,7 +58,7 @@ const Card = ({ onChange, error }) => {
           <div className="RfidCard error">
             <Header size="small" icon textAlign="center">
               <Icon size="small" name="close" circular />
-              <Header.Content>Que mal!!</Header.Content>
+              <Header.Content>Algo salio mal :(</Header.Content>
               <Header.Subheader>{error}</Header.Subheader>
             </Header>
           </div>

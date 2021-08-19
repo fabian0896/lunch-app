@@ -11,7 +11,7 @@ import { database } from '../../services/database';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required(),
-  company: Yup.number().required(),
+  company: Yup.string().required(),
   cardId: Yup.string().required(),
 });
 
@@ -52,9 +52,10 @@ const UserModal = ({
       return;
     }
     if (editData) {
+      const { _id: companyId } = editData.company;
       formik.setValues({
         name: startCase(editData.name),
-        company: editData.companyId,
+        company: companyId,
         cardId: editData.cardId,
       });
     }

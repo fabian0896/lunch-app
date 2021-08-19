@@ -61,10 +61,11 @@ const Home = () => {
   };
 
   const handleUserSelect = async (user) => {
+    // aqui tengo que verificar si hay algun error
+    // puede que el usuario no exista o que no este activo
     const { Order } = database();
     console.log(user, cart);
-    const res = await Order.create(user.id, cart);
-    console.log(res);
+    // const res = await Order.create(user, cart);
     setPayModal(false);
     setCart([]);
   };

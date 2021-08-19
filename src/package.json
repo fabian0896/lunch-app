@@ -16,9 +16,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "lunch-db": "https://github.com/fabian0896/lunch-db.git",
     "rfid": "https://github.com/fabian0896/serial-rfid.git",
-    "serialport": "^9.2.0",
-    "sqlite3": "^5.0.2"
+    "serialport": "^9.2.0"
   }
 }
