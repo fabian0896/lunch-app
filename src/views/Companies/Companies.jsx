@@ -15,7 +15,6 @@ const Companies = () => {
   const getCompanies = async () => {
     const { Company } = database();
     const results = await Company.getListWithUsers(true);
-    console.log(results);
     setCompanies(results);
   };
 

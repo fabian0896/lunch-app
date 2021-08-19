@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -16,16 +16,22 @@ import {
   UserDetailsView,
 } from './views';
 import { initDb } from './services/database';
-import UserDetails from './views/UserDetails';
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
   const setupConfiguration = async () => {
     await initDb();
+    setLoading(false);
   };
 
   useEffect(() => {
     setupConfiguration();
   }, []);
+
+  if (loading) {
+    return <div>Cargando base de datos...</div>;
+  }
+
   return (
     <Router>
       <Layout>
@@ -33,7 +39,7 @@ export default function App() {
           <Route exact path="/orders" component={OrdersView} />
           <Route exact path="/products" component={ProductsView} />
           <Route exact path="/users" component={UsersView} />
-          <Route exact path="/users/:id" component={UserDetails} />
+          <Route exact path="/users/:id" component={UserDetailsView} />
           <Route exact path="/companies" component={CompaniesView} />
           <Route exact path="/" component={HomeView} />
           <Route path="*">

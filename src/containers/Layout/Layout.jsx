@@ -26,7 +26,7 @@ const Layout = ({ children }) => {
         <div className="Layout-navigation">
           <ul>
             <Item exact title="Inicio" to="/" icon="home" />
-            <Item title="Ventas" to="orders" icon="shopping cart" />
+            <Item title="Ventas" to="/orders" icon="shopping cart" />
             <Item title="Comidas" to="/products" icon="utensils" />
             <Item title="Usuarios" to="/users" icon="address book" />
             <Item title="Empresas" to="/companies" icon="building" />

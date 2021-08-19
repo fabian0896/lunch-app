@@ -1,12 +1,12 @@
 import { startCase } from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { Divider } from 'semantic-ui-react';
 
 import {
   UserHeader,
   UserModal,
-  OrderDetails,
+  OrdersList,
   ConfirmModal,
 } from '../../components';
 import { database } from '../../services/database';
@@ -15,9 +15,12 @@ const UserDetails = () => {
   const { id } = useParams();
   const history = useHistory();
   const [user, setUser] = useState(null);
+  const [orders, setOrders] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [companyList, setCompanyList] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
+
+  const nextFunc = useRef();
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -39,9 +42,17 @@ const UserDetails = () => {
   };
 
   const getUserData = async () => {
-    const { User } = database();
-    const result = await User.getById(id);
-    setUser(result);
+    const { User, Order } = database();
+    const resUser = await User.getById(id);
+    const { data: resOrders, next } = await Order.getAll(4, resUser);
+    nextFunc.current = next;
+    setUser(resUser);
+    setOrders(resOrders);
+  };
+
+  const handleNext = async () => {
+    const { data } = await nextFunc.current();
+    setOrders((o) => [...o, ...data]);
   };
 
   useEffect(() => {
@@ -108,11 +119,7 @@ const UserDetails = () => {
       <Divider style={{ margin: '30px 0' }} horizontal>
         Compras
       </Divider>
-      <OrderDetails />
-      <OrderDetails />
-      <OrderDetails />
-      <OrderDetails />
-      <OrderDetails />
+      <OrdersList onNext={handleNext} orders={orders} />
     </div>
   );
 };
