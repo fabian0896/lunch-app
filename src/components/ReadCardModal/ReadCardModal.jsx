@@ -80,7 +80,7 @@ const ReadCardModal = ({ open, onCancel, products, onUserSelect }) => {
           content={getTotalPrice()}
           subheader="Precio total"
         />
-        <RfidCard error={error} onChange={handleReadCard} />
+        <RfidCard startRead={open} error={error} onChange={handleReadCard} />
         <Divider horizontal content="sin tarjeta" />
         <UserSearch
           onSelect={handleSelectUser}

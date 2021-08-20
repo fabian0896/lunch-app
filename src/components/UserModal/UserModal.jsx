@@ -102,6 +102,7 @@ const UserModal = ({
             name="company"
           />
           <RfidCard
+            startRead={false}
             error={formik.errors.cardId}
             onChange={(value) => formik.setFieldValue('cardId', value)}
           />

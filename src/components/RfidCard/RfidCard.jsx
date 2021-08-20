@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import './RfidCard.global.css';
 
-const Card = ({ onChange, error }) => {
+const Card = ({ onChange, error, startRead }) => {
   const [reading, setReading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [complete, setComplete] = useState(false);
@@ -51,6 +51,15 @@ const Card = ({ onChange, error }) => {
     ipcRenderer.sendSync('cancel-read-rfid');
     ipcRenderer.removeAllListeners();
   };
+
+  useEffect(() => {
+    if (startRead) {
+      handleRead();
+      return;
+    }
+    handleCancel();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [startRead]);
 
   if (complete) {
     if (success) {
@@ -129,10 +138,12 @@ const Card = ({ onChange, error }) => {
 Card.propTypes = {
   onChange: PropTypes.func,
   error: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+  startRead: PropTypes.bool,
 };
 Card.defaultProps = {
   onChange: () => {},
   error: false,
+  startRead: false,
 };
 
 export default Card;

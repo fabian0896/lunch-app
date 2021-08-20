@@ -16,6 +16,7 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const [favProducts, setFavProducts] = useState([]);
   const [cart, setCart] = useState([]);
+  const [selectUser, setSelectUser] = useState(null);
   const [payModal, setPayModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
 
@@ -73,8 +74,10 @@ const Home = () => {
     await Order.create(user, cart);
     setPayModal(false);
     setCart([]);
+    setSelectUser(user);
     setSuccessModal(true);
-    setTimeout(setSuccessModal, 1500, false);
+    setTimeout(setSuccessModal, 1800, false);
+    setTimeout(setSelectUser, 1800, null);
   };
 
   return (
@@ -83,6 +86,7 @@ const Home = () => {
         open={successModal}
         title="Pago realizado correcatamente"
         subtitle="El pago se agrego al usuario de una forma exitosa"
+        user={selectUser}
       />
       <ReadCardModal
         onUserSelect={handleUserSelect}
