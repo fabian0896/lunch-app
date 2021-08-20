@@ -2,15 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Header, Divider, Image } from 'semantic-ui-react';
 import numeral from 'numeral';
+import clsx from 'clsx';
 
 import './CartItem.global.css';
 
-const CartItem = ({ product, onClick }) => {
+const CartItem = ({ product, onClick, className }) => {
   const handleClick = () => {
     onClick(product);
   };
   return (
-    <div className="CartItem">
+    <div className={clsx('CartItem', className)}>
       <button
         onClick={handleClick}
         type="button"
@@ -36,10 +37,12 @@ const CartItem = ({ product, onClick }) => {
 CartItem.propTypes = {
   product: PropTypes.objectOf(PropTypes.any).isRequired,
   onClick: PropTypes.func,
+  className: PropTypes.string,
 };
 
 CartItem.defaultProps = {
   onClick: () => {},
+  className: '',
 };
 
 export default CartItem;

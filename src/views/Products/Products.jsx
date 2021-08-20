@@ -1,6 +1,13 @@
 /* eslint-disable no-alert */
 import React, { useState, useEffect } from 'react';
-import { Header, Button, Divider, Icon, Grid } from 'semantic-ui-react';
+import {
+  Header,
+  Button,
+  Divider,
+  Icon,
+  Grid,
+  Transition,
+} from 'semantic-ui-react';
 import { database } from '../../services/database';
 import { ProductModal, ProductCard, ConfirmModal } from '../../components';
 
@@ -105,16 +112,18 @@ const Products = () => {
         <>
           <Divider horizontal>Favoritos</Divider>
           <Grid columns={3}>
-            {favProducts.map((product) => (
-              <Grid.Column key={product.id}>
-                <ProductCard
-                  onFav={handleFavorite}
-                  onEdit={() => hanleEditProduct(product)}
-                  onDelete={() => handleOpenConfirmModal(product)}
-                  product={product}
-                />
-              </Grid.Column>
-            ))}
+            <Transition.Group animation="zoom" duration={200}>
+              {favProducts.map((product) => (
+                <Grid.Column key={product.id}>
+                  <ProductCard
+                    onFav={handleFavorite}
+                    onEdit={() => hanleEditProduct(product)}
+                    onDelete={() => handleOpenConfirmModal(product)}
+                    product={product}
+                  />
+                </Grid.Column>
+              ))}
+            </Transition.Group>
           </Grid>
         </>
       )}
@@ -122,16 +131,18 @@ const Products = () => {
         Todos
       </Divider>
       <Grid columns={3}>
-        {products.map((product) => (
-          <Grid.Column key={product.id}>
-            <ProductCard
-              onFav={handleFavorite}
-              onEdit={() => hanleEditProduct(product)}
-              onDelete={() => handleOpenConfirmModal(product)}
-              product={product}
-            />
-          </Grid.Column>
-        ))}
+        <Transition.Group animation="zoom" duration={200}>
+          {products.map((product) => (
+            <Grid.Column key={product.id}>
+              <ProductCard
+                onFav={handleFavorite}
+                onEdit={() => hanleEditProduct(product)}
+                onDelete={() => handleOpenConfirmModal(product)}
+                product={product}
+              />
+            </Grid.Column>
+          ))}
+        </Transition.Group>
       </Grid>
     </div>
   );

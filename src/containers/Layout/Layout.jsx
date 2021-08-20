@@ -68,7 +68,7 @@ const Layout = ({ children }) => {
           </div>
         </div>
       </Grid.Column>
-      <Grid.Column className="Layout-content" width={12}>
+      <Grid.Column id="layout-content" className="Layout-content" width={12}>
         {children}
       </Grid.Column>
     </Grid>

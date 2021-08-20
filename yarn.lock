@@ -7943,9 +7943,8 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
-"lunch-database@https://github.com/fabian0896/lunch-database.git":
+lunch-database@../lunch-database:
   version "1.0.0"
-  resolved "https://github.com/fabian0896/lunch-database.git#01809dbfd75ade23af4e01345782088b0a89e2b0"
   dependencies:
     nedb-promises "github:fabian0896/nedb-promises"
     yup "^0.32.9"

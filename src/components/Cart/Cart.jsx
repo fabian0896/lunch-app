@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Header, Button, Divider, Image } from 'semantic-ui-react';
+import { Header, Button, Divider, Image, Transition } from 'semantic-ui-react';
 import numeral from 'numeral';
 
 import CartItem from '../CartItem';
@@ -76,8 +76,11 @@ const Cart = ({ products, onChange, onPay }) => {
         subheader="Lista de productos"
         icon="shopping bag"
       />
-      {products.length ? (
-        <div className="Cart-product-list">
+      <div
+        style={{ flex: products.length ? 1 : '' }}
+        className="Cart-product-list"
+      >
+        <Transition.Group animation="fly left" duration={300}>
           {products.map((product) => (
             <CartItem
               onClick={handleProductSelected}
@@ -85,8 +88,9 @@ const Cart = ({ products, onChange, onPay }) => {
               product={product}
             />
           ))}
-        </div>
-      ) : (
+        </Transition.Group>
+      </div>
+      {!products.length && (
         <div className="Cart-product-empty">
           <Image src={emptySvg} />
           <Header

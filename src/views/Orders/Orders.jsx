@@ -11,21 +11,14 @@ const Orders = () => {
   const nextFunc = useRef();
   const getAllOrders = async () => {
     const { Order } = database();
-    const { data: resOrders, next } = await Order.getAll(4);
+    const { data: resOrders, next } = await Order.getAll(5);
     nextFunc.current = next;
-    console.log(resOrders);
     setOrders(resOrders);
   };
 
   useEffect(() => {
     getAllOrders();
   }, []);
-
-  const handleNext = async () => {
-    console.log('ejecuntando el next');
-    const { data } = await nextFunc.current();
-    setOrders((o) => [...o, ...data]);
-  };
 
   return (
     <div>
@@ -36,7 +29,7 @@ const Orders = () => {
         subheader="Lista de todas las ventas realizads"
       />
       <Divider />
-      <OrdersList orders={orders} onNext={handleNext} />
+      <OrdersList initOrders={orders} onNext={nextFunc.current} />
     </div>
   );
 };

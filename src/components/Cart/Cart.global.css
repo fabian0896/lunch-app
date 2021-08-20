@@ -15,7 +15,6 @@
 }
 
 .Cart-product-list {
-  flex: 1;
 }
 
 .Cart-product-list::-webkit-scrollbar {

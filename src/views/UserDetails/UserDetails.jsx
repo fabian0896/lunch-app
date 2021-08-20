@@ -50,11 +50,6 @@ const UserDetails = () => {
     setOrders(resOrders);
   };
 
-  const handleNext = async () => {
-    const { data } = await nextFunc.current();
-    setOrders((o) => [...o, ...data]);
-  };
-
   useEffect(() => {
     getUserData();
     getCompaniesList();
@@ -119,7 +114,7 @@ const UserDetails = () => {
       <Divider style={{ margin: '30px 0' }} horizontal>
         Compras
       </Divider>
-      <OrdersList onNext={handleNext} orders={orders} />
+      <OrdersList onNext={nextFunc.current} initOrders={orders} />
     </div>
   );
 };
