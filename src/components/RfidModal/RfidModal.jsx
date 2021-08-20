@@ -11,7 +11,7 @@ const validationSchema = Yup.object().shape({
   port: Yup.string().required(),
 });
 
-const RfidModal = ({ open, onOpen, onClose }) => {
+const RfidModal = ({ open, onOpen, onClose, onConnect }) => {
   const [portOptions, setPortOptions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -27,6 +27,7 @@ const RfidModal = ({ open, onOpen, onClose }) => {
         await ipcRenderer.invoke('connectRfid', port);
         setSuccess(true);
         setError(false);
+        onConnect();
       } catch (err) {
         setError(true);
         setSuccess(false);
@@ -114,6 +115,11 @@ RfidModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onOpen: PropTypes.func.isRequired,
+  onConnect: PropTypes.func,
+};
+
+RfidModal.defaultProps = {
+  onConnect: () => {},
 };
 
 export default RfidModal;

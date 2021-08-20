@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Divider, Grid } from 'semantic-ui-react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { ProductCard, Cart, ReadCardModal } from '../../components';
+import {
+  ProductCard,
+  Cart,
+  ReadCardModal,
+  SuccessModal,
+} from '../../components';
 import { database } from '../../services/database';
 
 import './Home.global.css';
@@ -12,6 +17,7 @@ const Home = () => {
   const [favProducts, setFavProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [payModal, setPayModal] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
 
   const addToCart = (product) => {
     let newCart = [...cart];
@@ -64,14 +70,20 @@ const Home = () => {
     // aqui tengo que verificar si hay algun error
     // puede que el usuario no exista o que no este activo
     const { Order } = database();
-    console.log(user, cart);
-    const res = await Order.create(user, cart);
+    await Order.create(user, cart);
     setPayModal(false);
     setCart([]);
+    setSuccessModal(true);
+    setTimeout(setSuccessModal, 1500, false);
   };
 
   return (
     <div>
+      <SuccessModal
+        open={successModal}
+        title="Pago realizado correcatamente"
+        subtitle="El pago se agrego al usuario de una forma exitosa"
+      />
       <ReadCardModal
         onUserSelect={handleUserSelect}
         products={cart}

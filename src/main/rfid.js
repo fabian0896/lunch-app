@@ -1,27 +1,72 @@
 const { ipcMain } = require('electron');
 const Rfid = require('rfid');
 
+let rfid = null;
+let unsuscribeFunc = null;
+
 module.exports = function setupRfid() {
   ipcMain.handle('getRfidPorts', async () => {
     const list = await Rfid.list();
     return list;
   });
 
-  ipcMain.handle('connectRfid', async (event, port) => {
-    // Aqui hay que conectar el rfid new Rfid({ port, baudRate: 9600 })
-    console.log(port);
-    if (Math.random() >= 0.5) {
-      throw new Error('error de prueba');
+  ipcMain.handle(
+    'connectRfid',
+    (event, port) =>
+      new Promise((resolve, reject) => {
+        try {
+          rfid = new Rfid({
+            baudRate: 9600,
+            portPath: port,
+          });
+
+          rfid.open((err) => {
+            const message = 'No se pudo conectar al dispositivo';
+            if (err) reject(message);
+            rfid.onReady(resolve);
+          });
+        } catch (err) {
+          const message = 'No se pudo conectar al dispositivo';
+          reject(message);
+        }
+      })
+  );
+
+  ipcMain.on('get-rfid-state', (event) => {
+    if (!rfid) {
+      event.reply('rfid-state', false);
     }
+    rfid.onConnectState((err, state) => {
+      event.reply('rfid-state', state === 'CONNECTED');
+    });
   });
 
-  ipcMain.on('readCard', (event) => {
-    setTimeout(() => {
-      if (Math.random() >= 0.5) {
-        event.reply('read-card-error', new Error('test error'));
-      } else {
-        event.reply('read-card-success', '123456789');
+  ipcMain.on('readCard', (event, timeout = 15000) => {
+    if (!rfid) {
+      event.reply(
+        'read-card-error',
+        new Error('No se detecta ningun dispositivo contectado')
+      );
+      return;
+    }
+    unsuscribeFunc = rfid.readCardOnce((err, data) => {
+      if (err) {
+        event.reply(
+          'read-card-error',
+          new Error('No se pudo leer ninguna tarjeta')
+        );
+        return;
       }
-    }, 5000);
+      const { id } = data.payload;
+      event.reply('read-card-success', id);
+    }, timeout);
+  });
+
+  ipcMain.on('cancel-read-rfid', (event) => {
+    if (unsuscribeFunc) {
+      unsuscribeFunc();
+      unsuscribeFunc = null;
+    }
+    event.returnValue = 'OK';
   });
 };

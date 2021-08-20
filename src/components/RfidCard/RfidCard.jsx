@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Button, Icon, Header } from 'semantic-ui-react';
 import { ipcRenderer } from 'electron';
 import PropTypes from 'prop-types';
-import { v4 as uuidv4 } from 'uuid';
 
 import './RfidCard.global.css';
 
@@ -10,18 +9,21 @@ const Card = ({ onChange, error }) => {
   const [reading, setReading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [complete, setComplete] = useState(false);
+  const [customErr, setCustomErr] = useState('');
 
   useEffect(() => {
     return () => {
+      ipcRenderer.sendSync('cancel-read-rfid');
       ipcRenderer.removeAllListeners();
     };
   }, []);
 
-  const hanldeCardReadError = () => {
+  const hanldeCardReadError = (event, err) => {
     setComplete(true);
     setSuccess(false);
     setReading(false);
     onChange(null);
+    setCustomErr(err.message);
     ipcRenderer.removeAllListeners();
   };
 
@@ -29,9 +31,7 @@ const Card = ({ onChange, error }) => {
     setComplete(true);
     setSuccess(true);
     setReading(false);
-    const testCardId = uuidv4();
-    console.log(testCardId);
-    onChange(testCardId);
+    onChange(cardId);
     ipcRenderer.removeAllListeners();
   };
 
@@ -48,6 +48,7 @@ const Card = ({ onChange, error }) => {
     setReading(false);
     setComplete(false);
     setSuccess(false);
+    ipcRenderer.sendSync('cancel-read-rfid');
     ipcRenderer.removeAllListeners();
   };
 
@@ -56,6 +57,11 @@ const Card = ({ onChange, error }) => {
       if (error) {
         return (
           <div className="RfidCard error">
+            <Icon
+              onClick={handleRead}
+              className="RfidCard-action-icon"
+              name="redo"
+            />
             <Header size="small" icon textAlign="center">
               <Icon size="small" name="close" circular />
               <Header.Content>Algo salio mal :(</Header.Content>
@@ -66,6 +72,11 @@ const Card = ({ onChange, error }) => {
       }
       return (
         <div className="RfidCard success">
+          <Icon
+            onClick={handleRead}
+            className="RfidCard-action-icon"
+            name="redo"
+          />
           <Header size="small" icon textAlign="center">
             <Icon size="small" name="check" circular />
             <Header.Content>Ohhh Yeah!!</Header.Content>
@@ -86,9 +97,7 @@ const Card = ({ onChange, error }) => {
         <Header size="small" icon textAlign="center">
           <Icon size="small" name="close" circular />
           <Header.Content>Que mal!!</Header.Content>
-          <Header.Subheader>
-            No se pudo scanear la tarjeta, intenta nuevamente
-          </Header.Subheader>
+          <Header.Subheader>{customErr}</Header.Subheader>
         </Header>
       </div>
     );

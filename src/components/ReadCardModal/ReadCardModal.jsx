@@ -15,6 +15,7 @@ import profileSvg from '../../../assets/svg/profile_pic.svg';
 const ReadCardModal = ({ open, onCancel, products, onUserSelect }) => {
   const [results, setResults] = useState();
   const [user, setUser] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSearchChange = async (e, data) => {
     const { User } = database();
@@ -24,6 +25,19 @@ const ReadCardModal = ({ open, onCancel, products, onUserSelect }) => {
 
   const handleSelectUser = (selectedUser) => {
     setUser(selectedUser);
+  };
+
+  const handleReadCard = async (cardId) => {
+    const { User } = database();
+    const resUser = await User.getByCardId(cardId);
+    if (!resUser) {
+      setError('La tarjeta no esta vinculada a ningun usuario');
+      setUser(false);
+      return;
+    }
+    setError('');
+    setUser(resUser);
+    onUserSelect(resUser);
   };
 
   const getTotalPrice = () => {
@@ -66,7 +80,7 @@ const ReadCardModal = ({ open, onCancel, products, onUserSelect }) => {
           content={getTotalPrice()}
           subheader="Precio total"
         />
-        <RfidCard />
+        <RfidCard error={error} onChange={handleReadCard} />
         <Divider horizontal content="sin tarjeta" />
         <UserSearch
           onSelect={handleSelectUser}

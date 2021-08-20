@@ -586,7 +586,7 @@ restore-cursor@^3.1.0:
 
 "rfid@https://github.com/fabian0896/serial-rfid.git":
   version "1.0.0"
-  resolved "https://github.com/fabian0896/serial-rfid.git#46b0ff66e3f8a35c498cba4c2477f57ed569cd2f"
+  resolved "https://github.com/fabian0896/serial-rfid.git#a0b1d227595e242f137d9e521c51de10f7537581"
   dependencies:
     inquirer "^8.1.2"
     serialport "^9.2.0"

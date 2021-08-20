@@ -36,7 +36,7 @@ const UserModal = ({
     },
     validate: async (values) => {
       const errors = {};
-      if (editData) return errors;
+      if (editData?.cardId === values.cardId) return errors;
       const { User } = database();
       const user = await User.getByCardId(values.cardId);
       if (user) {

@@ -38,8 +38,8 @@ export default function App() {
         <Switch>
           <Route exact path="/orders" component={OrdersView} />
           <Route exact path="/products" component={ProductsView} />
-          <Route exact path="/users" component={UsersView} />
           <Route exact path="/users/:id" component={UserDetailsView} />
+          <Route exact path="/users" component={UsersView} />
           <Route exact path="/companies" component={CompaniesView} />
           <Route exact path="/" component={HomeView} />
           <Route path="*">
