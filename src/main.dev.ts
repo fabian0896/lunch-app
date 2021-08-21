@@ -19,6 +19,7 @@ import MenuBuilder from './menu';
 import setupDatabase from './main/database';
 import setupRfid from './main/rfid';
 import setupImages from './main/images';
+import setupUtilities from './main/utilities';
 
 export default class AppUpdater {
   constructor() {
@@ -139,3 +140,4 @@ app.on('activate', () => {
 setupDatabase();
 setupRfid();
 setupImages();
+setupUtilities(mainWindow);
