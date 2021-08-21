@@ -7,7 +7,7 @@ import { OrderDetails } from '..';
 
 import emptySvg from '../../../assets/svg/empty.svg';
 
-const OrdersList = ({ initOrders, onNext }) => {
+const OrdersList = ({ initOrders, onNext, onUserClick, onDelete }) => {
   const [hasMore, setHasMore] = useState(true);
   const [orders, setOrders] = useState(initOrders);
 
@@ -37,7 +37,12 @@ const OrdersList = ({ initOrders, onNext }) => {
         >
           <Transition.Group animation="zoom" duration={200}>
             {orders.map((order) => (
-              <OrderDetails key={order.id} order={order} />
+              <OrderDetails
+                onDelete={onDelete}
+                onUserClick={onUserClick}
+                key={order.id}
+                order={order}
+              />
             ))}
           </Transition.Group>
         </InfiniteScroll>
@@ -50,10 +55,14 @@ const OrdersList = ({ initOrders, onNext }) => {
 OrdersList.propTypes = {
   initOrders: PropTypes.arrayOf(PropTypes.any).isRequired,
   onNext: PropTypes.func,
+  onUserClick: PropTypes.func,
+  onDelete: PropTypes.func,
 };
 
 OrdersList.defaultProps = {
   onNext: () => {},
+  onUserClick: () => {},
+  onDelete: () => {},
 };
 
 export default OrdersList;

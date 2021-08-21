@@ -108,7 +108,10 @@ const OrderDetails = ({ order, onUserClick, onDelete, className }) => {
               size="medium"
               textAlign="left"
               subheader="Total de productos"
-              content={2}
+              content={order.products.reduce(
+                (sum, product) => sum + product.details.quantity,
+                0
+              )}
             />
             <Header
               color="green"

@@ -20,6 +20,9 @@ const UserDetails = () => {
   const [companyList, setCompanyList] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
 
+  const [selectedOrder, setSelectedORder] = useState(null);
+  const [confirmModal, setConfirmModal] = useState(false);
+
   const nextFunc = useRef();
 
   const handleCloseModal = () => {
@@ -44,7 +47,7 @@ const UserDetails = () => {
   const getUserData = async () => {
     const { User, Order } = database();
     const resUser = await User.getById(id);
-    const { data: resOrders, next } = await Order.getAll(4, resUser);
+    const { data: resOrders, next } = await Order.getAll(10, resUser);
     nextFunc.current = next;
     setUser(resUser);
     setOrders(resOrders);
@@ -57,7 +60,7 @@ const UserDetails = () => {
   }, []);
 
   const handleGoBack = () => {
-    history.goBack();
+    history.push('/users');
   };
 
   const handleEditUser = async (value) => {
@@ -82,12 +85,44 @@ const UserDetails = () => {
     setDeleteModal(false);
   };
 
+  const handleDelete = async () => {
+    const { Order } = database();
+    await Order.destroy(selectedOrder);
+    await getUserData();
+    setConfirmModal(false);
+    setSelectedORder(null);
+  };
+
+  const handleCloseConfirmModal = () => {
+    setSelectedORder(null);
+    setConfirmModal(false);
+  };
+
+  const handleOpenConfirmModal = (order) => {
+    setSelectedORder(order);
+    setConfirmModal(true);
+  };
+
   if (!user) {
     return <div>cargando...</div>;
   }
 
   return (
     <div>
+      <ConfirmModal
+        open={confirmModal}
+        title={`Eliminar pedido #${String(selectedOrder?.consecutive).padStart(
+          3,
+          '0'
+        )}`}
+        message={`Esta seguro que desea eliminar el pedido #${String(
+          selectedOrder?.consecutive
+        ).padStart(3, '0')} a nombre de ${startCase(
+          selectedOrder?.user.name
+        )}. No se podra recuperar.`}
+        onClose={handleCloseConfirmModal}
+        onConfirm={handleDelete}
+      />
       <ConfirmModal
         title="Borrar usuario"
         message={`Esta segur@ que desea eliminar el usuario ${startCase(
@@ -114,7 +149,11 @@ const UserDetails = () => {
       <Divider style={{ margin: '30px 0' }} horizontal>
         Compras
       </Divider>
-      <OrdersList onNext={nextFunc.current} initOrders={orders} />
+      <OrdersList
+        onDelete={handleOpenConfirmModal}
+        onNext={nextFunc.current}
+        initOrders={orders}
+      />
     </div>
   );
 };

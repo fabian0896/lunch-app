@@ -1,9 +1,8 @@
-import { result } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Header, Button, Divider, Icon } from 'semantic-ui-react';
 import { useHistory } from 'react-router-dom';
 
-import { UserModal, UserList } from '../../components';
+import { UserModal, UserList, SearchUserCardModal } from '../../components';
 import { database } from '../../services/database';
 
 const Users = () => {
@@ -11,6 +10,9 @@ const Users = () => {
   const [companyList, setCompanyList] = useState([]);
   const [openUserModal, setOpenUserModal] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
+
+  const [searchModal, setSearchModal] = useState(false);
+  const [cardSearchError, setCardSearchError] = useState(false);
 
   const history = useHistory();
 
@@ -61,8 +63,43 @@ const Users = () => {
     history.push(`/users/${id}`);
   };
 
+  const handleCloseSearchModal = () => {
+    setSearchModal(false);
+    setCardSearchError(false);
+  };
+
+  const handleOpenSearchModal = () => {
+    setSearchModal(true);
+    setCardSearchError(false);
+  };
+
+  const handleCardSearchCompleted = async (cardId) => {
+    setCardSearchError(false);
+
+    if (!cardId) {
+      setCardSearchError('La tarjeta no se leyó correctamente');
+      return;
+    }
+    const { User } = database();
+    const user = await User.getByCardId(cardId);
+
+    if (!user) {
+      setCardSearchError('La tarjeta no esta vinculada a ningun usuario');
+      return;
+    }
+
+    const { _id: userId } = user;
+    history.push(`/users/${userId}`);
+  };
+
   return (
     <div>
+      <SearchUserCardModal
+        error={cardSearchError}
+        open={searchModal}
+        onClose={handleCloseSearchModal}
+        onRead={handleCardSearchCompleted}
+      />
       <UserModal
         onSubmit={handleCreateUser}
         open={openUserModal}
@@ -84,6 +121,7 @@ const Users = () => {
       </Button>
       <Divider />
       <UserList
+        onCardSearch={handleOpenSearchModal}
         onSelect={({ id }) => goToUser(id)}
         searchResults={searchResults}
         onSearchChange={handleSearchChange}

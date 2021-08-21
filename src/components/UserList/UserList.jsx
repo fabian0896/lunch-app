@@ -15,7 +15,13 @@ import UserSearch from '../UserSearch';
 
 import avatarSvg from '../../../assets/svg/profile_pic.svg';
 
-const UserList = ({ users, onSearchChange, searchResults, onSelect }) => {
+const UserList = ({
+  users,
+  onSearchChange,
+  searchResults,
+  onSelect,
+  onCardSearch,
+}) => {
   const handleOnResultSelect = (data) => {
     onSelect(data);
   };
@@ -34,7 +40,12 @@ const UserList = ({ users, onSearchChange, searchResults, onSelect }) => {
                 />
               </Grid.Column>
               <Grid.Column textAlign="right" width="5">
-                <Button secondary content="Buscar con tarjeta" icon="search" />
+                <Button
+                  onClick={onCardSearch}
+                  secondary
+                  content="Buscar con tarjeta"
+                  icon="search"
+                />
               </Grid.Column>
             </Grid>
           </Table.HeaderCell>
@@ -78,12 +89,14 @@ UserList.propTypes = {
   onSearchChange: PropTypes.func,
   onSelect: PropTypes.func,
   searchResults: PropTypes.arrayOf(PropTypes.any),
+  onCardSearch: PropTypes.func,
 };
 
 UserList.defaultProps = {
   onSearchChange: () => {},
   onSelect: () => {},
   searchResults: [],
+  onCardSearch: () => {},
 };
 
 export default UserList;
