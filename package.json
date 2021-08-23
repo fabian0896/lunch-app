@@ -35,6 +35,7 @@
     "npmRebuild": false,
     "appId": "org.erb.ElectronReact",
     "files": [
+      "assets/",
       "dist/",
       "node_modules/",
       "index.html",
@@ -259,6 +260,7 @@
     "electron-updater": "^4.3.4",
     "formik": "^2.2.9",
     "history": "^5.0.0",
+    "jsreport": "^2.11.0",
     "lodash": "^4.17.21",
     "lunch-database": "https://github.com/fabian0896/lunch-database",
     "moment": "^2.29.1",

@@ -6,6 +6,9 @@ import { ipcRenderer } from 'electron';
 import { useFormik } from 'formik';
 
 import es from 'date-fns/locale/es';
+
+import { database } from '../../services/database';
+
 import './CustomDatePicker.global.css';
 
 registerLocale('es', es);
@@ -16,8 +19,11 @@ const CustomDatePicker = () => {
       dateRange: [null, null],
       path: null,
     },
-    onSubmit: (values, actions) => {
+    onSubmit: async (values, actions) => {
       console.log(values);
+      const { Company } = database();
+      const reportData = await Company.getReportData(values.dateRange);
+      console.log(JSON.stringify(reportData));
       formik.resetForm();
       // eslint-disable-next-line no-alert
       alert('El reporte se  guardo correctamente');
