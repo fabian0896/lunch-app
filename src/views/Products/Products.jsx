@@ -8,6 +8,7 @@ import {
   Grid,
   Transition,
 } from 'semantic-ui-react';
+import { ipcRenderer } from 'electron';
 import { database } from '../../services/database';
 import { ProductModal, ProductCard, ConfirmModal } from '../../components';
 
@@ -40,6 +41,7 @@ const Products = () => {
     if (selectedProduct) {
       await Product.update(selectedProduct.id, values);
     } else {
+      values.image = await ipcRenderer.invoke('backup-image', values.image);
       await Product.create(values);
     }
     handleCloseProductModal();

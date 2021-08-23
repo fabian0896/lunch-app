@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import NumberFormat from 'react-number-format';
-import { Modal, Image, Button, Form } from 'semantic-ui-react';
+import { Modal, Image, Button, Form, Message } from 'semantic-ui-react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
-import defaults from 'defaults';
 
 import breakfastSvg from '../../../assets/svg/breakfast.svg';
 
@@ -29,6 +28,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const ProductModal = ({ open, onOpen, onClose, onSubmit, editValues }) => {
+  const [imageError, setImageError] = useState(false);
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -37,17 +37,26 @@ const ProductModal = ({ open, onOpen, onClose, onSubmit, editValues }) => {
     },
     onSubmit: async (values, actions) => {
       values.price = parseInt(values.price, 10);
-      await onSubmit(values, actions);
+      try {
+        await onSubmit(values, actions);
+        actions.resetForm();
+      } catch (err) {
+        setImageError(
+          'Se presento un error comprimiendo la imagen, intenta nuevamente o selecciona otra imagen'
+        );
+      }
     },
     validationSchema,
   });
 
   const handleClose = () => {
     formik.resetForm();
+    setImageError(false);
     onClose();
   };
 
   const handleChangeFile = (e) => {
+    setImageError(false);
     const file = e.target.files[0];
     formik.setFieldValue('image', file.path);
   };
@@ -55,15 +64,23 @@ const ProductModal = ({ open, onOpen, onClose, onSubmit, editValues }) => {
   useEffect(() => {
     if (!open) {
       formik.resetForm();
+      setImageError(false);
       return;
     }
     if (!editValues) {
       formik.resetForm();
+      setImageError(false);
       return;
     }
     formik.setValues(editValues);
+    setImageError(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editValues, open]);
+
+  const handleRemoveImage = () => {
+    setImageError(false);
+    formik.setFieldValue('image', '');
+  };
 
   return (
     <Modal
@@ -93,7 +110,7 @@ const ProductModal = ({ open, onOpen, onClose, onSubmit, editValues }) => {
             wrapped
           />
         )}
-        <Form onSubmit={formik.handleSubmit}>
+        <Form error={imageError} onSubmit={formik.handleSubmit}>
           <Form.Input
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -122,7 +139,7 @@ const ProductModal = ({ open, onOpen, onClose, onSubmit, editValues }) => {
                 labelPosition="right"
                 content="Quitar Imagen"
                 fluid
-                onClick={() => formik.setFieldValue('image', '')}
+                onClick={handleRemoveImage}
               />
             ) : (
               <Button
@@ -138,7 +155,7 @@ const ProductModal = ({ open, onOpen, onClose, onSubmit, editValues }) => {
             )}
             <input
               hidden
-              accept="image/*"
+              accept=".png, .jpg, .jpeg"
               id="image"
               name="image"
               label="Imagen"
@@ -146,8 +163,14 @@ const ProductModal = ({ open, onOpen, onClose, onSubmit, editValues }) => {
               type="file"
             />
           </Form.Field>
-
-          <Form.Button disabled={!formik.isValid} type="submit" positive fluid>
+          <Message error header="Algo salio mal :(" content={imageError} />
+          <Form.Button
+            loading={formik.isSubmitting}
+            disabled={!formik.isValid || !!imageError}
+            type="submit"
+            positive
+            fluid
+          >
             {editValues ? 'Editar' : 'Crear'}
           </Form.Button>
         </Form>
