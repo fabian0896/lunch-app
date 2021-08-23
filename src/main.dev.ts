@@ -20,6 +20,7 @@ import setupDatabase from './main/database';
 import setupRfid from './main/rfid';
 import setupImages from './main/images';
 import setupUtilities from './main/utilities';
+import setupReport from './main/reports';
 
 export default class AppUpdater {
   constructor() {
@@ -141,3 +142,4 @@ setupDatabase();
 setupRfid();
 setupImages();
 setupUtilities(mainWindow);
+setupReport();

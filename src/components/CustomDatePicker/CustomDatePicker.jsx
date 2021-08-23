@@ -4,29 +4,24 @@ import { Form, Input } from 'semantic-ui-react';
 import { endOfDay } from 'date-fns';
 import { ipcRenderer } from 'electron';
 import { useFormik } from 'formik';
+import PropTypes from 'prop-types';
 
 import es from 'date-fns/locale/es';
-
-import { database } from '../../services/database';
 
 import './CustomDatePicker.global.css';
 
 registerLocale('es', es);
 
-const CustomDatePicker = () => {
+const CustomDatePicker = ({ onSubmit }) => {
   const formik = useFormik({
     initialValues: {
       dateRange: [null, null],
       path: null,
     },
     onSubmit: async (values, actions) => {
-      console.log(values);
-      const { Company } = database();
-      const reportData = await Company.getReportData(values.dateRange);
-      console.log(JSON.stringify(reportData));
-      formik.resetForm();
+      await onSubmit(values);
+      actions.resetForm();
       // eslint-disable-next-line no-alert
-      alert('El reporte se  guardo correctamente');
     },
   });
 
@@ -68,6 +63,7 @@ const CustomDatePicker = () => {
           />
         </Form.Field>
         <Form.Button
+          loading={formik.isSubmitting}
           disabled={!endDate}
           onClick={handleSelectSavePath}
           type="button"
@@ -78,6 +74,13 @@ const CustomDatePicker = () => {
       </Form>
     </div>
   );
+};
+
+CustomDatePicker.propTypes = {
+  onSubmit: PropTypes.func,
+};
+CustomDatePicker.defaultProps = {
+  onSubmit: () => {},
 };
 
 export default CustomDatePicker;

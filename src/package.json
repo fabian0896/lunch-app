@@ -16,6 +16,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "jsreport": "^2.11.0",
     "rfid": "https://github.com/fabian0896/serial-rfid.git",
     "serialport": "^9.2.0"
   }

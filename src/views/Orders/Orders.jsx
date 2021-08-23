@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Header, Divider } from 'semantic-ui-react';
 import { useHistory } from 'react-router-dom';
 import { startCase } from 'lodash';
+import { ipcRenderer } from 'electron';
 
 import { OrdersList, ConfirmModal, CustomDatePicker } from '../../components';
 import { database } from '../../services/database';
@@ -49,6 +50,12 @@ const Orders = () => {
     setConfirmModal(true);
   };
 
+  const handleSubmitReport = async (values) => {
+    const { dateRange, path } = values;
+    const { Company } = database();
+    const data = await Company.getReportData(dateRange);
+    await ipcRenderer.invoke('generate-report', dateRange, path, data);
+  };
   return (
     <div>
       <ConfirmModal
@@ -71,7 +78,7 @@ const Orders = () => {
         content="Ventas"
         subheader="Lista de todas las ventas realizads"
       />
-      <CustomDatePicker />
+      <CustomDatePicker onSubmit={handleSubmitReport} />
       <Divider />
       <OrdersList
         onUserClick={handleUserClick}
