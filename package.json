@@ -251,6 +251,8 @@
     "yarn-deduplicate": "^3.1.0"
   },
   "dependencies": {
+    "@dicebear/avatars": "^4.7.2",
+    "@dicebear/avatars-male-sprites": "^4.7.2",
     "caniuse-lite": "^1.0.30001249",
     "clsx": "^1.1.1",
     "date-fns": "^2.23.0",

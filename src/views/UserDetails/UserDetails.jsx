@@ -9,6 +9,7 @@ import {
   OrdersList,
   ConfirmModal,
 } from '../../components';
+import { generateAvatar } from '../../services';
 import { database } from '../../services/database';
 
 const UserDetails = () => {
