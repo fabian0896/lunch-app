@@ -2,6 +2,9 @@ const { ipcMain, app } = require('electron');
 const { compress } = require('compress-images/promise');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
+const fs = require('fs');
+const { createAvatar } = require('@dicebear/avatars');
+const style = require('@dicebear/avatars-male-sprites');
 
 module.exports = function setupImages() {
   ipcMain.handle('backup-image', async (event, imagePath) => {
@@ -32,5 +35,18 @@ module.exports = function setupImages() {
     }
 
     return statistics[0].path_out_new;
+  });
+
+  ipcMain.on('generate-avatar', (event, id) => {
+    const svg = createAvatar(style, {
+      seed: id,
+      backgroundColor: '#FFFFFF',
+      margin: 5,
+      mood: ['happy'],
+    });
+    const appPath = app.getPath('appData');
+    const savePath = path.join(appPath, app.getName(), 'images/', `${id}.svg`);
+    fs.writeFileSync(savePath, svg, { encoding: 'utf-8' });
+    event.returnValue = savePath;
   });
 };

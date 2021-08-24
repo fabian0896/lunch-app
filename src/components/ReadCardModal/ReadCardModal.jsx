@@ -63,7 +63,7 @@ const ReadCardModal = ({ open, onCancel, products, onUserSelect }) => {
       <Modal.Content>
         {user ? (
           <Header dividing textAlign="center" size="large" icon>
-            <Image src={profileSvg} />
+            <Image rounded src={user.avatar || profileSvg} />
             <Header.Content>
               {startCase(user.name)}
               <Header.Subheader>

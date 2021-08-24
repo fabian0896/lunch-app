@@ -14,7 +14,7 @@ const UserSearch = ({ results, onSearchChange, onSelect }) => {
     return values.map((user) => ({
       title: startCase(user.name),
       description: user.company?.name || 'Sin empresa',
-      image: avatarSvg,
+      image: user.avatar || avatarSvg,
       id: user.id,
     }));
   };

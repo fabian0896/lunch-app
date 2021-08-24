@@ -21,7 +21,12 @@ const SuccessModal = ({ title, subtitle, open, user }) => {
         {user && (
           <>
             <Divider horizontal inverted content="Cliente" />
-            <Image src={avatarSvg} size="tiny" centered />
+            <Image
+              rounded
+              src={user.avatar || avatarSvg}
+              size="tiny"
+              centered
+            />
             <Header
               textAlign="center"
               inverted

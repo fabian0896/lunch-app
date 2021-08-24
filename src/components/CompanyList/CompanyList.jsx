@@ -98,7 +98,7 @@ const CompanyList = ({ company, onDelet, onUpdate, onSeeDatails }) => {
           <Table.Row key={user._id}>
             <Table.Cell>
               <Header as="h4" image>
-                <Image src={userSvg} rounded size="mini" />
+                <Image src={user.avatar || userSvg} rounded size="mini" />
                 <Header.Content>
                   {startCase(user.name)}
                   <Header.Subheader>

@@ -17,7 +17,7 @@ const UserHeader = ({ user, onGoBack, onEdit, onDelete }) => {
         size="big"
         name="arrow left"
       />
-      <Image centered size="tiny" src={userSvg} />
+      <Image rounded centered size="tiny" src={user.avatar || userSvg} />
       <Header textAlign="center" as="h2">
         <Header.Content>
           {startCase(user.name)}

@@ -60,7 +60,7 @@ const UserList = ({
           >
             <Table.Cell>
               <Header as="h4" image>
-                <Image rounded src={avatarSvg} />
+                <Image rounded src={user.avatar || avatarSvg} />
                 <Header.Content>
                   {startCase(user.name)}
                   <Header.Subheader>

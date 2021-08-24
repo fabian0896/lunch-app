@@ -83,7 +83,11 @@ const OrderDetails = ({ order, onUserClick, onDelete, className }) => {
           </div>
           <div className="OrderDetails-user-info">
             <Header style={{ width: '100%', margin: 0 }} size="small" image>
-              <Image style={{ margin: 0 }} src={avatarSvg} />
+              <Image
+                rounded
+                style={{ margin: 0 }}
+                src={order.user.avatar || avatarSvg}
+              />
               <Header.Content
                 onClick={() => onUserClick(order.user)}
                 className="OrderDetails-user-info-header"

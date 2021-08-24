@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Header, Button, Divider, Icon } from 'semantic-ui-react';
 import { useHistory } from 'react-router-dom';
+import { ipcRenderer } from 'electron';
 
 import { UserModal, UserList, SearchUserCardModal } from '../../components';
 import { database } from '../../services/database';
@@ -48,7 +49,10 @@ const Users = () => {
 
   const handleCreateUser = async (values) => {
     const { User } = database();
-    await User.create(values);
+    const result = await User.create(values);
+    const { _id: id } = result;
+    const avatar = ipcRenderer.sendSync('generate-avatar', id);
+    await User.update(id, { avatar });
     handleCloseUserModal();
     await getAllUsers();
   };
