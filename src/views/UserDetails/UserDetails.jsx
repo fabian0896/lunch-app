@@ -10,6 +10,7 @@ import {
   ConfirmModal,
 } from '../../components';
 import { database } from '../../services/database';
+import { getCutDayRange } from '../../services/utilities';
 
 const UserDetails = () => {
   const { id } = useParams();
@@ -49,6 +50,21 @@ const UserDetails = () => {
     const resUser = await User.getById(id);
     const { data: resOrders, next } = await Order.getAll(10, resUser);
     nextFunc.current = next;
+
+    const dateRange = getCutDayRange(new Date());
+    const statsResults = await Order.getAllByDateRange(dateRange, resUser);
+
+    const totalPrice = statsResults.reduce((sum, order) => {
+      const totalOfOrder = order.products.reduce((s, product) => {
+        return s + product.details.quantity * product.details.price;
+      }, 0);
+      return sum + totalOfOrder;
+    }, 0);
+
+    resUser.totalPrice = totalPrice;
+    resUser.totalOrders = statsResults.length;
+    resUser.dateRange = dateRange;
+
     setUser(resUser);
     setOrders(resOrders);
   };

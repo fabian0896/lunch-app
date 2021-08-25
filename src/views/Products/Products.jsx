@@ -39,6 +39,9 @@ const Products = () => {
   const handleSubmit = async (values) => {
     const { Product } = database();
     if (selectedProduct) {
+      if (values.image !== selectedProduct.image) {
+        values.image = await ipcRenderer.invoke('backup-image', values.image);
+      }
       await Product.update(selectedProduct.id, values);
     } else {
       values.image = await ipcRenderer.invoke('backup-image', values.image);

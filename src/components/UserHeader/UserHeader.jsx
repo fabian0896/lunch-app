@@ -1,8 +1,16 @@
 import React from 'react';
-import { Header, Button, Image, Divider, Icon } from 'semantic-ui-react';
+import {
+  Header,
+  Button,
+  Image,
+  Divider,
+  Icon,
+  Statistic,
+} from 'semantic-ui-react';
 import { startCase } from 'lodash';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import numeral from 'numeral';
+import { format } from 'date-fns';
 
 import userSvg from '../../../assets/svg/profile_pic.svg';
 
@@ -24,11 +32,25 @@ const UserHeader = ({ user, onGoBack, onEdit, onDelete }) => {
           <Header.Subheader>
             {user.company?.name || 'Sin empresa'}
           </Header.Subheader>
-          <Header.Subheader>
-            Ultima actualización: {moment(user.updateAt).format('DD/MM/YYYY')}
-          </Header.Subheader>
         </Header.Content>
       </Header>
+      <p style={{ textAlign: 'center' }}>
+        Estadisticas basadas desde el{' '}
+        <strong>{format(user.dateRange[0], 'd/MM/y')}</strong> hasta el{' '}
+        <strong>{format(user.dateRange[1], 'd/MM/y')}</strong>
+      </p>
+      <Statistic.Group
+        color="grey"
+        style={{ marginTop: '25px' }}
+        size="small"
+        widths="2"
+      >
+        <Statistic
+          label="Valor total"
+          value={numeral(user.totalPrice).format('$0,0')}
+        />
+        <Statistic label="Pedidos" value={user.totalOrders} />
+      </Statistic.Group>
       <Divider />
       <div className="UserHeader-actions">
         <Button onClick={onEdit} content="editar" secondary icon="edit" />

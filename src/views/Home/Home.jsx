@@ -76,14 +76,18 @@ const Home = () => {
     setCart([]);
     setSelectUser(user);
     setSuccessModal(true);
-    setTimeout(setSuccessModal, 1800, false);
-    setTimeout(setSelectUser, 1800, null);
+  };
+
+  const handleCloseSuccesModal = () => {
+    setSuccessModal(false);
+    setSelectUser(false);
   };
 
   return (
     <div>
       <SuccessModal
         open={successModal}
+        onClose={handleCloseSuccesModal}
         title="Pago realizado correcatamente"
         subtitle="El pago se agrego al usuario de una forma exitosa"
         user={selectUser}
