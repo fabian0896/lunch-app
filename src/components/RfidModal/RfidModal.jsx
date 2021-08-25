@@ -11,7 +11,14 @@ const validationSchema = Yup.object().shape({
   port: Yup.string().required(),
 });
 
-const RfidModal = ({ open, onOpen, onClose, onConnect }) => {
+const RfidModal = ({
+  open,
+  onOpen,
+  onClose,
+  onConnect,
+  connect,
+  onDisconnect,
+}) => {
   const [portOptions, setPortOptions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -21,16 +28,21 @@ const RfidModal = ({ open, onOpen, onClose, onConnect }) => {
     initialValues: {
       port: '',
     },
-    onSubmit: async (value) => {
+    onSubmit: async (value, actions) => {
       const { port } = value;
+      setError(false);
       try {
+        setLoading(true);
         await ipcRenderer.invoke('connectRfid', port);
         setSuccess(true);
         setError(false);
         onConnect();
+        setLoading(false);
       } catch (err) {
         setError(true);
         setSuccess(false);
+        setLoading(false);
+        actions.resetForm();
       }
     },
     validationSchema,
@@ -55,6 +67,15 @@ const RfidModal = ({ open, onOpen, onClose, onConnect }) => {
     if (!open) return;
     getPorts();
   }, [open]);
+
+  const handleDisconnect = async () => {
+    try {
+      await onDisconnect();
+      setError(false);
+    } catch (err) {
+      setError(err);
+    }
+  };
 
   return (
     <Modal
@@ -88,9 +109,26 @@ const RfidModal = ({ open, onOpen, onClose, onConnect }) => {
             label="puerto"
             options={portOptions}
           />
-          <Form.Button disabled={!formik.isValid} type="submit" positive fluid>
-            Conectar
-          </Form.Button>
+          {connect ? (
+            <Form.Button
+              onClick={handleDisconnect}
+              type="button"
+              negative
+              fluid
+            >
+              Desconectar
+            </Form.Button>
+          ) : (
+            <Form.Button
+              disabled={!formik.isValid}
+              type="submit"
+              positive
+              fluid
+              loading={loading}
+            >
+              Conectar
+            </Form.Button>
+          )}
           <Message error>
             <Message.Header>Algo salio mal!</Message.Header>
             <p>
@@ -116,10 +154,14 @@ RfidModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onOpen: PropTypes.func.isRequired,
   onConnect: PropTypes.func,
+  connect: PropTypes.bool,
+  onDisconnect: PropTypes.func,
 };
 
 RfidModal.defaultProps = {
   onConnect: () => {},
+  connect: false,
+  onDisconnect: () => {},
 };
 
 export default RfidModal;

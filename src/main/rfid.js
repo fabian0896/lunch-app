@@ -1,8 +1,12 @@
 const { ipcMain } = require('electron');
+const { EventEmitter } = require('events');
 const Rfid = require('rfid');
 
 let rfid = null;
 let unsuscribeFunc = null;
+
+class RfidState extends EventEmitter {}
+const rfidState = new RfidState();
 
 module.exports = function setupRfid() {
   ipcMain.handle('getRfidPorts', async () => {
@@ -14,6 +18,12 @@ module.exports = function setupRfid() {
     'connectRfid',
     (event, port) =>
       new Promise((resolve, reject) => {
+        if (rfid) {
+          rfidState.emit('change-rfid', true);
+          const message = 'Ya existe una concción activa';
+          reject(message);
+        }
+
         try {
           rfid = new Rfid({
             baudRate: 9600,
@@ -22,23 +32,48 @@ module.exports = function setupRfid() {
 
           rfid.open((err) => {
             const message = 'No se pudo conectar al dispositivo';
-            if (err) reject(message);
-            rfid.onReady(resolve);
+            if (err) {
+              rfidState.emit('change-rfid', false);
+              reject(message);
+            }
+
+            rfid.on('close', () => {
+              rfidState.emit('change-rfid', false);
+              if (rfid) {
+                rfid.removeAllListeners();
+                rfid = null;
+              }
+            });
+
+            rfid.onReady((error) => {
+              if (error) {
+                rfid.close();
+                const ErrorMessage = 'No se pudo conectar al dispositivo';
+                reject(ErrorMessage);
+              }
+              rfidState.emit('change-rfid', true);
+              resolve();
+            });
           });
         } catch (err) {
           const message = 'No se pudo conectar al dispositivo';
+          rfidState.emit('change-rfid', false);
           reject(message);
         }
       })
   );
 
   ipcMain.on('get-rfid-state', (event) => {
-    if (!rfid) {
+    event.reply('rfid-state', !!rfid);
+    rfidState.on('change-rfid', (state) => {
+      event.reply('rfid-state', state);
+    });
+    /* if (!rfid) {
       event.reply('rfid-state', false);
     }
     rfid.onConnectState((err, state) => {
       event.reply('rfid-state', state === 'CONNECTED');
-    });
+    }); */
   });
 
   ipcMain.on('readCard', (event, timeout = 15000) => {
@@ -68,5 +103,16 @@ module.exports = function setupRfid() {
       unsuscribeFunc = null;
     }
     event.returnValue = 'OK';
+  });
+
+  ipcMain.handle('disconnect-rfid', async () => {
+    rfid.close((err) => {
+      if (err)
+        throw new Error('Se presentó un error al desconectar el dispositivo');
+      if (rfid) {
+        rfid.removeAllListeners();
+        rfid = null;
+      }
+    });
   });
 };

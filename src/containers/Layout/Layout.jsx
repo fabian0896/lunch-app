@@ -28,10 +28,16 @@ const Layout = ({ children }) => {
     ipcRenderer.send('get-rfid-state');
   };
 
+  const handleDisconnect = async () => {
+    await ipcRenderer.invoke('disconnect-rfid');
+  };
+
   return (
     <Grid className="Layout-grid">
       <Grid.Column className="Layout-menu-container" width={4}>
         <RfidModal
+          onDisconnect={handleDisconnect}
+          connect={rfidConnect}
           onConnect={handleConnect}
           open={openRfidModal}
           onOpen={handleOpenRfidModal}
