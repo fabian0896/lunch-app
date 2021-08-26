@@ -18,6 +18,7 @@
   "dependencies": {
     "compress-images": "^1.9.9",
     "jsreport": "^2.11.0",
+    "jsreport-module": "https://github.com/fabian0896/jsreport-module.git",
     "pngquant-bin": "^6.0.0",
     "rfid": "https://github.com/fabian0896/serial-rfid.git",
     "serialport": "^9.2.0"
