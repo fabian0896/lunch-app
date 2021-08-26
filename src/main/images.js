@@ -17,7 +17,7 @@ module.exports = function setupImages() {
     );
 
     const result = await compress({
-      source: imagePath,
+      source: imagePath.replace(/\\/g, '/'),
       destination: fullPath,
       enginesSetup: {
         jpg: { engine: 'mozjpeg', command: ['-quality', '60'] },

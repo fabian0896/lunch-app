@@ -93,23 +93,28 @@ module.exports = function setupRfid() {
         return;
       }
       const { id } = data.payload;
+      unsuscribeFunc = null;
       event.reply('read-card-success', id);
     }, timeout);
   });
 
-  ipcMain.on('cancel-read-rfid', (event) => {
+  ipcMain.handle('cancel-read-rfid', async () => {
     if (unsuscribeFunc) {
-      unsuscribeFunc();
+      await unsuscribeFunc();
       unsuscribeFunc = null;
     }
-    event.returnValue = 'OK';
   });
 
   ipcMain.handle('disconnect-rfid', async () => {
+    if (!rfid) {
+      rfidState.emit('change-rfid', false);
+      return;
+    }
     rfid.close((err) => {
       if (err)
         throw new Error('Se presentó un error al desconectar el dispositivo');
       if (rfid) {
+        rfidState.emit('change-rfid', false);
         rfid.removeAllListeners();
         rfid = null;
       }

@@ -12,9 +12,10 @@ const Card = ({ onChange, error, startRead }) => {
   const [customErr, setCustomErr] = useState('');
 
   useEffect(() => {
-    return () => {
-      ipcRenderer.sendSync('cancel-read-rfid');
-      ipcRenderer.removeAllListeners();
+    return async () => {
+      await ipcRenderer.invoke('cancel-read-rfid');
+      ipcRenderer.removeAllListeners('read-card-error');
+      ipcRenderer.removeAllListeners('read-card-success');
     };
   }, []);
 
@@ -24,7 +25,8 @@ const Card = ({ onChange, error, startRead }) => {
     setReading(false);
     onChange(null);
     setCustomErr(err.message);
-    ipcRenderer.removeAllListeners();
+    ipcRenderer.removeAllListeners('read-card-error');
+    ipcRenderer.removeAllListeners('read-card-success');
   };
 
   const hanldeCardReadSuccess = (event, cardId) => {
@@ -32,7 +34,8 @@ const Card = ({ onChange, error, startRead }) => {
     setSuccess(true);
     setReading(false);
     onChange(cardId);
-    ipcRenderer.removeAllListeners();
+    ipcRenderer.removeAllListeners('read-card-error');
+    ipcRenderer.removeAllListeners('read-card-success');
   };
 
   const handleRead = () => {
@@ -44,12 +47,13 @@ const Card = ({ onChange, error, startRead }) => {
     ipcRenderer.once('read-card-success', hanldeCardReadSuccess);
   };
 
-  const handleCancel = () => {
+  const handleCancel = async () => {
+    await ipcRenderer.invoke('cancel-read-rfid');
     setReading(false);
     setComplete(false);
     setSuccess(false);
-    ipcRenderer.sendSync('cancel-read-rfid');
-    ipcRenderer.removeAllListeners();
+    ipcRenderer.removeAllListeners('read-card-error');
+    ipcRenderer.removeAllListeners('read-card-success');
   };
 
   useEffect(() => {
