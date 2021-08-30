@@ -32,7 +32,6 @@ module.exports = function setupReports() {
       let [startDate, endDate] = dateRange;
       startDate = format(startDate, "dd 'de' MMMM 'del' yyyy", { locale: es });
       endDate = format(endDate, "dd 'de' MMMM 'del' yyyy", { locale: es });
-
       const report = await jsreport.render({
         template: {
           content,
