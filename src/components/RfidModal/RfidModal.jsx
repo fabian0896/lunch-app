@@ -109,6 +109,20 @@ const RfidModal = ({
             label="puerto"
             options={portOptions}
           />
+          <Message error>
+            <Message.Header>Algo salio mal!</Message.Header>
+            <p>
+              No se pudo conectar al dispositivo, verifica que estes
+              seleccionando el puero correcto
+            </p>
+          </Message>
+          <Message success>
+            <Message.Header>Conectado correctamente!</Message.Header>
+            <p>
+              El dispositivo se conecto correctamente, ya puedes empezar a
+              usarlo con tranquilidad
+            </p>
+          </Message>
           {connect ? (
             <Form.Button
               onClick={handleDisconnect}
@@ -129,20 +143,6 @@ const RfidModal = ({
               Conectar
             </Form.Button>
           )}
-          <Message error>
-            <Message.Header>Algo salio mal!</Message.Header>
-            <p>
-              No se pudo conectar al dispositivo, verifica que estes
-              seleccionando el puero correcto
-            </p>
-          </Message>
-          <Message success>
-            <Message.Header>Conectado correctamente!</Message.Header>
-            <p>
-              El dispositivo se conecto correctamente, ya puedes empezar a
-              usarlo con tranquilidad
-            </p>
-          </Message>
         </Form>
       </Modal.Content>
     </Modal>

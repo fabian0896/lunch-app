@@ -51,26 +51,25 @@ const Layout = ({ children }) => {
             <Item title="Usuarios" to="/users" icon="address book" />
             <Item title="Empresas" to="/companies" icon="building" />
           </ul>
-          <div className="Layout-submenu">
-            <div className="Layout-rfid-status">
-              <Header
-                onClick={handleOpenRfidModal}
-                className="Layout-rfid-status-header"
-                content="Conección RFID"
-                subheader={`Estado: ${
-                  rfidConnect ? 'conectado' : 'desconectado'
-                }`}
-                icon="connectdevelop"
-                color="grey"
-                inverted
-              />
-              <div
-                className={clsx('Layout-rfid-status-dot', {
-                  connected: rfidConnect,
-                  disconnected: !rfidConnect,
-                })}
-              />
-            </div>
+          <div className="Layout-submenu" />
+          <div className="Layout-rfid-status">
+            <Header
+              onClick={handleOpenRfidModal}
+              className="Layout-rfid-status-header"
+              content="Conección RFID"
+              subheader={`Estado: ${
+                rfidConnect ? 'conectado' : 'desconectado'
+              }`}
+              icon="connectdevelop"
+              color="grey"
+              inverted
+            />
+            <div
+              className={clsx('Layout-rfid-status-dot', {
+                connected: rfidConnect,
+                disconnected: !rfidConnect,
+              })}
+            />
           </div>
         </div>
       </Grid.Column>

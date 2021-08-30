@@ -1,22 +1,21 @@
-.Layout-grid{
+.Layout-grid {
   margin: 0 !important;
 }
 
-.Layout-menu-container{
+.Layout-menu-container {
   padding: 0 !important;
   display: flex;
   flex-direction: column;
 }
 
-.Layout-content{
+.Layout-content {
   padding: 30px !important;
   height: 100vh;
   overflow: auto;
 }
 
-
-.Layout-navigation{
-  padding: 25px 0px;
+.Layout-navigation {
+  padding-top: 25px;
   width: 100%;
   background: #151515;
   height: 100vh;
@@ -44,21 +43,21 @@
   margin-bottom: 10px;
 }
 
-.Item-item{
+.Item-item {
   color: white !important;
   margin: 0 !important;
 }
 
-.active li{
+.active li {
   background: white;
   border-radius: 10px 0px 0px 10px;
 }
 
-.active li .Item-item{
+.active li .Item-item {
   color: #151515 !important;
 }
 
-.active li b:nth-child(1){
+.active li b:nth-child(1) {
   position: absolute;
   height: 10px;
   top: -10px;
@@ -66,17 +65,17 @@
   width: 100%;
   background: white;
 }
-.active li b:nth-child(1)::before{
-    content: '';
-    height: 100%;
-    width: 100%;
-    background: #151515;
-    position: absolute;
-    top: 0;
-    left: 0;
-    border-bottom-right-radius: 10px;
-  }
-.active li b:nth-child(2){
+.active li b:nth-child(1)::before {
+  content: '';
+  height: 100%;
+  width: 100%;
+  background: #151515;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-bottom-right-radius: 10px;
+}
+.active li b:nth-child(2) {
   position: absolute;
   height: 10px;
   bottom: -10px;
@@ -84,46 +83,57 @@
   width: 100%;
   background: white;
 }
-.active li b:nth-child(2)::before{
-    content: '';
-    height: 100%;
-    width: 100%;
-    background: #151515;
-    position: absolute;
-    top: 0;
-    left: 0;
-    border-top-right-radius: 10px;
-  }
+.active li b:nth-child(2)::before {
+  content: '';
+  height: 100%;
+  width: 100%;
+  background: #151515;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-top-right-radius: 10px;
+}
 
+.Layout-submenu {
+  padding: 0 20px;
+}
 
-  .Layout-submenu{
-    padding: 0 20px;
-  }
+.Layout-rfid-status {
+  padding: 25px 15px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background: #232323;
+  transition: 0.2s;
+}
+.Layout-rfid-status:hover {
+  background: #555;
+}
+.Layout-rfid-status:hover > div {
+  transform: scale(1.05);
+}
 
-  .Layout-rfid-status{
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-  }
+.Layout-rfid-status-header {
+  transition: 0.2s;
+  flex: 1;
+  margin: 0 !important;
+}
 
-  .Layout-rfid-status-header{
-    flex: 1;
-  }
+.Layout-rfid-status-dot {
+  transition: 0.2s;
+  width: 10px;
+  height: 10px;
+  background: grey;
+  border-radius: 50%;
+  box-shadow: 0px 0px 5px grey;
+}
 
-  .Layout-rfid-status-dot{
-    width: 8px;
-    height: 8px;
-    background: grey;
-    border-radius: 50%;
-    box-shadow: 0px 0px 5px grey;
-  }
+.Layout-rfid-status-dot.disconnected {
+  background: #db2828;
+  box-shadow: 0px 0px 9px #db2828;
+}
 
-  .Layout-rfid-status-dot.disconnected{
-    background: #db2828;
-    box-shadow: 0px 0px 7px #db2828;
-  }
-
-  .Layout-rfid-status-dot.connected{
-    background: #16ab39;
-    box-shadow: 0px 0px 7px #16ab39;
-  }
+.Layout-rfid-status-dot.connected {
+  background: #16ab39;
+  box-shadow: 0px 0px 9px #16ab39;
+}
