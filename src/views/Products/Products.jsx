@@ -68,7 +68,7 @@ const Products = () => {
   const handleDelete = async () => {
     if (!setSelectedProduct) return;
     const { Product } = database();
-    await Product.destroy(selectedProduct.id);
+    await Product.disable(selectedProduct.id);
     getAllProducts();
     handleCloseConfirmModal();
   };
