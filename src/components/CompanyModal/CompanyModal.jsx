@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import addTaskSvg from '../../../assets/svg/add_tasks.svg';
+import addTaskSvg from '../../../assets/svg/add_tasks.png';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('El nombre es necesario'),

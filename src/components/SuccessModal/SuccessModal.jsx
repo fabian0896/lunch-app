@@ -13,7 +13,7 @@ import { startCase } from 'lodash';
 
 import './SuccessModal.global.css';
 
-import avatarSvg from '../../../assets/svg/profile_pic.svg';
+import avatarSvg from '../../../assets/svg/profile_pic.png';
 
 const SuccessModal = ({ title, subtitle, open, user, onClose }) => {
   return (

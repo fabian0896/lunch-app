@@ -5,7 +5,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { OrderDetails } from '..';
 
-import emptySvg from '../../../assets/svg/empty.svg';
+import emptySvg from '../../../assets/svg/empty.png';
 
 const OrdersList = ({ initOrders, onNext, onUserClick, onDelete }) => {
   const [hasMore, setHasMore] = useState(true);

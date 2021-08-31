@@ -4,8 +4,8 @@ import { Header, Image, Table, Button, Input, Icon } from 'semantic-ui-react';
 import { startCase } from 'lodash';
 import moment from 'moment';
 
-import addTaskSvg from '../../../assets/svg/empty.svg';
-import userSvg from '../../../assets/svg/profile_pic.svg';
+import addTaskSvg from '../../../assets/svg/empty.png';
+import userSvg from '../../../assets/svg/profile_pic.png';
 
 const CompanyList = ({ company, onDelet, onUpdate, onSeeDatails }) => {
   const [edit, setEdit] = useState(false);

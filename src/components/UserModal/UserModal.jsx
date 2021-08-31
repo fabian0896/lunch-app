@@ -5,7 +5,8 @@ import { useFormik } from 'formik';
 import { startCase } from 'lodash';
 import * as Yup from 'yup';
 import RfidCard from '../RfidCard';
-import addUserSvg from '../../../assets/svg/profile_pic.svg';
+
+import addUserSvg from '../../../assets/svg/profile_pic.png';
 
 import { database } from '../../services/database';
 

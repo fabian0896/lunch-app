@@ -9,11 +9,11 @@ import {
   Button,
   Grid,
 } from 'semantic-ui-react';
-import { startCase, debounce } from 'lodash';
+import { startCase } from 'lodash';
 
 import UserSearch from '../UserSearch';
 
-import avatarSvg from '../../../assets/svg/profile_pic.svg';
+import avatarSvg from '../../../assets/svg/profile_pic.png';
 
 const UserList = ({
   users,

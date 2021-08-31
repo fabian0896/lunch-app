@@ -7,7 +7,7 @@ import CartItem from '../CartItem';
 
 import './Cart.global.css';
 
-import emptySvg from '../../../assets/svg/empty.svg';
+import emptySvg from '../../../assets/svg/empty.png';
 import EditModal from './EditModal';
 
 const Cart = ({ products, onChange, onPay }) => {

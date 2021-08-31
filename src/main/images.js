@@ -1,5 +1,5 @@
 const { ipcMain, app } = require('electron');
-const { compress } = require('compress-images/promise');
+// const { compress } = require('compress-images/promise');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 const fs = require('fs');
@@ -9,14 +9,15 @@ const style = require('@dicebear/avatars-male-sprites');
 module.exports = function setupImages() {
   ipcMain.handle('backup-image', async (event, imagePath) => {
     const appPath = app.getPath('appData');
+    const ext = path.extname(imagePath);
     const fullPath = path.join(
       appPath,
       app.getName(),
       'images/',
-      `${uuidv4()}-`
+      `${uuidv4()}${ext}`
     );
 
-    const result = await compress({
+    /* const result = await compress({
       source: imagePath.replace(/\\/g, '/'),
       destination: fullPath,
       enginesSetup: {
@@ -34,7 +35,9 @@ module.exports = function setupImages() {
       throw new Error('No fue posible comprimir la imagen');
     }
 
-    return statistics[0].path_out_new;
+    return statistics[0].path_out_new; */
+    fs.copyFileSync(imagePath, fullPath);
+    return imagePath;
   });
 
   ipcMain.on('generate-avatar', (event, id) => {

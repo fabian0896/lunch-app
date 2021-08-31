@@ -8,7 +8,7 @@ import NumberFormat from 'react-number-format';
 
 import './ProductCard.global.css';
 
-import hamburgerSvg from '../../../assets/svg/hamburger.svg';
+import hamburgerSvg from '../../../assets/svg/hamburger.png';
 
 const ProductCard = ({ product, onDelete, onEdit, onAddCart, onFav }) => {
   const [active, setActive] = useState(false);

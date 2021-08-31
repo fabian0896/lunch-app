@@ -7,7 +7,7 @@ import numeral from 'numeral';
 
 import './OrderDetails.global.css';
 import clsx from 'clsx';
-import avatarSvg from '../../../assets/svg/profile_pic.svg';
+import avatarSvg from '../../../assets/svg/profile_pic.png';
 
 const Item = ({ product }) => {
   return (
