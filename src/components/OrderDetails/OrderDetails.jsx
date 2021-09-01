@@ -7,7 +7,9 @@ import numeral from 'numeral';
 
 import './OrderDetails.global.css';
 import clsx from 'clsx';
+
 import avatarSvg from '../../../assets/svg/profile_pic.png';
+import hamburgerSvg from '../../../assets/svg/hamburger.png';
 
 const Item = ({ product }) => {
   return (
@@ -17,7 +19,7 @@ const Item = ({ product }) => {
           <span className="OrderDetails-quantity-label">
             {product.details.quantity}
           </span>
-          <img src={product.image} alt={product.name} />
+          <img src={product.image || hamburgerSvg} alt={product.name} />
         </div>
         <Header
           size="tiny"

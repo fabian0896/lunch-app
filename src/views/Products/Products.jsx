@@ -68,6 +68,8 @@ const Products = () => {
   const handleDelete = async () => {
     if (!setSelectedProduct) return;
     const { Product } = database();
+    await ipcRenderer.invoke('delete-image', selectedProduct.image);
+    await Product.update(selectedProduct.id, { image: null });
     await Product.disable(selectedProduct.id);
     getAllProducts();
     handleCloseConfirmModal();

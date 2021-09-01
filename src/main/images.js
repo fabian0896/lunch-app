@@ -15,31 +15,24 @@ module.exports = function setupImages() {
     const fileName = `${uuidv4()}${ext}`;
 
     const imageFolder = path.join(appPath, app.getName(), 'images');
-    await mkdrip(imageFolder);
 
     const fullPath = path.join(imageFolder, fileName);
 
-    /* const result = await compress({
-      source: imagePath.replace(/\\/g, '/'),
-      destination: fullPath,
-      enginesSetup: {
-        jpg: { engine: 'mozjpeg', command: ['-quality', '60'] },
-        png: { engine: 'pngquant', command: ['--quality=20-50', '-o'] },
-      },
-      onProgress(err) {
-        if (err) throw new Error('No fue posible comprimir la imagen');
-      },
-    });
-
-    const { statistics, errors } = result;
-
-    if (!!errors.length || statistics[0].err) {
-      throw new Error('No fue posible comprimir la imagen');
-    }
-
-    return statistics[0].path_out_new; */
+    await mkdrip(imageFolder);
     fs.copyFileSync(imagePath, fullPath, fs.constants.COPYFILE_FICLONE);
-    return imagePath;
+    return fullPath;
+  });
+
+  ipcMain.handle('delete-image', (event, imagePath) => {
+    return new Promise((resolve, reject) => {
+      fs.unlink(imagePath, (err) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve();
+      });
+    });
   });
 
   ipcMain.on('generate-avatar', (event, id) => {

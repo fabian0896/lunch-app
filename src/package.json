@@ -16,15 +16,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "compress-images": "^1.9.9",
-    "giflossy": "^3.0.41",
-    "gifsicle": "^5.2.0",
-    "guetzli": "^3.0.1",
-    "jpegoptim-bin": "^6.0.0",
     "jsreport": "^2.11.0",
     "jsreport-module": "https://github.com/fabian0896/jsreport-module.git",
-    "optipng-bin": "^7.0.0",
-    "pngquant-bin": "^6.0.0",
     "rfid": "https://github.com/fabian0896/serial-rfid.git",
     "serialport": "^9.2.0"
   }

@@ -7952,7 +7952,7 @@ lru-cache@^6.0.0:
 
 "lunch-database@https://github.com/fabian0896/lunch-database":
   version "1.0.0"
-  resolved "https://github.com/fabian0896/lunch-database#855e44b0611a929def7226d5471ae25a359e6111"
+  resolved "https://github.com/fabian0896/lunch-database#aa062ceaf8a110c03d3fa346cdb5ad5b9d945d28"
   dependencies:
     nedb-promises "github:fabian0896/nedb-promises"
     yup "^0.32.9"

@@ -42,7 +42,7 @@ const ProductModal = ({ open, onOpen, onClose, onSubmit, editValues }) => {
         actions.resetForm();
       } catch (err) {
         setImageError(
-          'Se presento un error comprimiendo la imagen, intenta nuevamente o selecciona otra imagen'
+          'Se presento un error cargando la imagen por favor intenta con otra'
         );
       }
     },
@@ -110,7 +110,7 @@ const ProductModal = ({ open, onOpen, onClose, onSubmit, editValues }) => {
             wrapped
           />
         )}
-        <Form error={imageError} onSubmit={formik.handleSubmit}>
+        <Form error={!!imageError} onSubmit={formik.handleSubmit}>
           <Form.Input
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
