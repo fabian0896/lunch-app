@@ -50,7 +50,10 @@ module.exports = function setupImages() {
       mood: ['happy'],
     });
     const appPath = app.getPath('appData');
-    const savePath = path.join(appPath, app.getName(), 'images/', `${id}.svg`);
+    const imageFolder = path.join(appPath, app.getName(), 'images');
+    const fileName = `${id}.svg`;
+    mkdrip.sync(imageFolder);
+    const savePath = path.join(imageFolder, fileName);
     fs.writeFileSync(savePath, svg, { encoding: 'utf-8' });
     event.returnValue = savePath;
   });

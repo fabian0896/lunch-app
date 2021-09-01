@@ -1,4 +1,15 @@
 /*!
+ * Copyright(c) 2014 Jan Blaha
+ *
+ * nodejs client for remote jsreport server
+ * able to render reports or do crud using jaydata context.
+ */
+
+/*!
+ * Copyright(c) 2014 Jan Blaha
+ */
+
+/*!
  * Determine if an object is a Buffer
  *
  * @author   Feross Aboukhadijeh <https://feross.org>
@@ -62,3 +73,5 @@
  */
 
 /*! http://mths.be/fromcodepoint v0.1.0 by @mathias */
+
+/*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */

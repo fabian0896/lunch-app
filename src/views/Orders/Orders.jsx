@@ -4,6 +4,8 @@ import { useHistory } from 'react-router-dom';
 import { startCase } from 'lodash';
 import { ipcRenderer } from 'electron';
 
+import format from 'date-fns/format';
+import es from 'date-fns/locale/es';
 import { OrdersList, ConfirmModal, CustomDatePicker } from '../../components';
 import { database } from '../../services/database';
 
@@ -51,10 +53,31 @@ const Orders = () => {
   };
 
   const handleSubmitReport = async (values) => {
+    if (!navigator.onLine) {
+      throw new Error(
+        'Para poder generar el reporte es necesario una conexión a interner'
+      );
+    }
     const { dateRange, path } = values;
+    const dateRangeFormat = dateRange.map((d) => {
+      return format(d, "dd 'de' MMMM 'del' yyyy", {
+        locale: es,
+      });
+    });
     const { Company } = database();
     const data = await Company.getReportData(dateRange);
-    await ipcRenderer.invoke('generate-report', dateRange, path, data);
+    try {
+      await ipcRenderer.invoke(
+        'generate-report-online',
+        dateRangeFormat,
+        path,
+        data
+      );
+    } catch (err) {
+      throw new Error(
+        'Algo salio mal con el servidor :( Por favor revisa si hay conexión a internet y vuelve a intentarlo'
+      );
+    }
   };
   return (
     <div>

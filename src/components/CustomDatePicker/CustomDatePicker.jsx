@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
-import { Form, Input } from 'semantic-ui-react';
+import { Form, Input, Message } from 'semantic-ui-react';
 import { endOfDay } from 'date-fns';
 import { ipcRenderer } from 'electron';
 import { useFormik } from 'formik';
@@ -13,19 +13,29 @@ import './CustomDatePicker.global.css';
 registerLocale('es', es);
 
 const CustomDatePicker = ({ onSubmit }) => {
+  const [error, setError] = useState(false);
   const formik = useFormik({
     initialValues: {
       dateRange: [null, null],
       path: null,
     },
     onSubmit: async (values, actions) => {
-      await onSubmit(values);
-      actions.resetForm();
+      try {
+        await onSubmit(values);
+        actions.resetForm();
+        setError(false);
+      } catch (err) {
+        setError(err);
+      }
       // eslint-disable-next-line no-alert
     },
   });
 
   const [startDate, endDate] = formik.values.dateRange;
+
+  useEffect(() => {
+    setError(false);
+  }, [startDate, endDate]);
 
   const handleChange = (update) => {
     const [start, end] = update;
@@ -48,7 +58,7 @@ const CustomDatePicker = ({ onSubmit }) => {
 
   return (
     <div>
-      <Form onSubmit={formik.handleSubmit}>
+      <Form error={!!error} onSubmit={formik.handleSubmit}>
         <Form.Field>
           <DatePicker
             placeholderText="Selecciona fecha del reporte"
@@ -62,6 +72,7 @@ const CustomDatePicker = ({ onSubmit }) => {
             customInput={<Input />}
           />
         </Form.Field>
+        <Message error header="Error" content={error.message} />
         <Form.Button
           loading={formik.isSubmitting}
           disabled={!endDate}
