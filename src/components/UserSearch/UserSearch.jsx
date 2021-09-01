@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { startCase, debounce } from 'lodash';
 import { Search, Input } from 'semantic-ui-react';
 
-import avatarSvg from '../../../assets/svg/profile_pic.svg';
+import avatarSvg from '../../../assets/svg/profile_pic.png';
 
 const UserSearch = ({ results, onSearchChange, onSelect }) => {
   const handleChandeSearch = debounce(onSearchChange, 300, {

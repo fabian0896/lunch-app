@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 import numeral from 'numeral';
 import { format } from 'date-fns';
 
-import userSvg from '../../../assets/svg/profile_pic.svg';
+import userSvg from '../../../assets/svg/profile_pic.png';
 
 import './UserHeader.global.css';
 

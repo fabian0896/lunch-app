@@ -6,13 +6,6 @@
  */
 
 /*!
- * bytes
- * Copyright(c) 2012-2014 TJ Holowaychuk
- * Copyright(c) 2015 Jed Watson
- * MIT Licensed
- */
-
-/*!
  * deep-rename-keys <https://github.com/jonschlinkert/deep-rename-keys>
  *
  * Copyright (c) 2015 Jon Schlinkert, contributors.
@@ -69,8 +62,3 @@
  */
 
 /*! http://mths.be/fromcodepoint v0.1.0 by @mathias */
-
-/** @module promise-nodeify
- * @copyright Copyright 2016-2018 Kevin Locke <kevin@kevinlocke.name>
- * @license MIT
- */

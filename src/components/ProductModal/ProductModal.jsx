@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 
-import breakfastSvg from '../../../assets/svg/breakfast.svg';
+import breakfastSvg from '../../../assets/svg/breakfast.png';
 
 import './ProductModal.global.css';
 

@@ -5,7 +5,7 @@ import { ipcRenderer } from 'electron';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import searchingSignalSvg from '../../../assets/svg/signal_searching.svg';
+import searchingSignalSvg from '../../../assets/svg/signal_searching.png';
 
 const validationSchema = Yup.object().shape({
   port: Yup.string().required(),

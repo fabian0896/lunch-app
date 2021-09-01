@@ -9,8 +9,8 @@ import RfidCard from '../RfidCard';
 
 import { database } from '../../services/database';
 
-import rfidCardSvg from '../../../assets/svg/plain_credit_card.svg';
-import profileSvg from '../../../assets/svg/profile_pic.svg';
+import rfidCardSvg from '../../../assets/svg/plain_credit_card.png';
+import profileSvg from '../../../assets/svg/profile_pic.png';
 
 const ReadCardModal = ({ open, onCancel, products, onUserSelect }) => {
   const [results, setResults] = useState();
