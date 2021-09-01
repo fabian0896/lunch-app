@@ -5,17 +5,19 @@ const path = require('path');
 const fs = require('fs');
 const { createAvatar } = require('@dicebear/avatars');
 const style = require('@dicebear/avatars-male-sprites');
+const mkdrip = require('mkdirp');
 
 module.exports = function setupImages() {
   ipcMain.handle('backup-image', async (event, imagePath) => {
     const appPath = app.getPath('appData');
     const ext = path.extname(imagePath);
-    const fullPath = path.join(
-      appPath,
-      app.getName(),
-      'images/',
-      `${uuidv4()}${ext}`
-    );
+
+    const fileName = `${uuidv4()}${ext}`;
+
+    const imageFolder = path.join(appPath, app.getName(), 'images');
+    await mkdrip(imageFolder);
+
+    const fullPath = path.join(imageFolder, fileName);
 
     /* const result = await compress({
       source: imagePath.replace(/\\/g, '/'),
@@ -36,7 +38,7 @@ module.exports = function setupImages() {
     }
 
     return statistics[0].path_out_new; */
-    fs.copyFileSync(imagePath, fullPath);
+    fs.copyFileSync(imagePath, fullPath, fs.constants.COPYFILE_FICLONE);
     return imagePath;
   });
 

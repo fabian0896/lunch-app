@@ -4,7 +4,7 @@ import { Header, Image, Form, Icon } from 'semantic-ui-react';
 import NumberFormat from 'react-number-format';
 import { useFormik } from 'formik';
 
-import hamburguerSvg from '../../../assets/svg/hamburger.svg';
+import hamburguerSvg from '../../../assets/svg/hamburger.png';
 
 const EditModal = ({ product, onClose, onEdit, onDelete }) => {
   const editModalRef = useRef();
